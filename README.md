@@ -1,3 +1,7 @@
+<img width="1701" height="928" alt="room html" src="https://github.com/user-attachments/assets/06959514-02b5-40e1-b2be-966a949a3d70" />
+<img width="1751" height="912" alt="registration html" src="https://github.com/user-attachments/assets/15ffa735-bafa-429a-8348-cb59e124bc18" />
+<img width="1873" height="951" alt="index html" src="https://github.com/user-attachments/assets/dfb6dfd7-a9c8-4b4b-ad16-39f7bb3dac8a" />
+<img width="1766" height="776" alt="bookinng html" src="https://github.com/user-attachments/assets/cd4d54c3-fad1-4513-838e-a4ee7799734f" />
 Smart Hotel Booking Management System with Face Recognition
 
 About the Project
