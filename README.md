@@ -1,4 +1,4 @@
-Smart Hotel Management System with Face Recognition
+Smart Hotel Booking Management System with Face Recognition
 
 About the Project
 The Smart Hotel Management System with Face Recognition is a web-based application developed as a final-year academic project. It aims to simplify hotel room booking, guest registration, booking management, and guest verification using face recognition technology.
