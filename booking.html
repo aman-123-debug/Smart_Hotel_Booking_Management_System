@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Hotel - Booking</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        .navbar {
+            background: #1e3a5f;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logo {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .page-header {
+            background: #24476c;
+            color: white;
+            text-align: center;
+            padding: 35px 15px;
+        }
+
+        .container {
+            max-width: 1100px;
+            width: 92%;
+            margin: 30px auto;
+        }
+
+        .booking-container {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 25px;
+            align-items: start;
+        }
+
+        .booking-box, .summary-box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px #00000012;
+        }
+
+        h2 {
+            color: #1e3a5f;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            color: #1e3a5f;
+            margin: 22px 0 14px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 7px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+            background: white;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #1e3a5f;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .guest-card {
+            padding: 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            background: #fafcff;
+        }
+
+        .camera-box {
+            background: #f1f4f8;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 10px;
+        }
+
+        video, #photoPreview {
+            display: block;
+            width: 100%;
+            max-height: 280px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin: 10px 0;
+            background: #222;
+        }
+
+        #photoPreview {
+            display: none;
+        }
+
+        button {
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            padding: 12px 16px;
+            font-size: 15px;
+        }
+
+        .small-btn {
+            background: #e6edf5;
+            color: #1e3a5f;
+            margin: 4px 4px 4px 0;
+        }
+
+        .continue-btn {
+            width: 100%;
+            background: #1e3a5f;
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .continue-btn:hover {
+            background: #162d49;
+        }
+
+        .room-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .room-name {
+            font-size: 23px;
+            color: #1e3a5f;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin: 15px 0;
+            color: #555;
+        }
+
+        .total {
+            border-top: 1px solid #ddd;
+            padding-top: 15px;
+            font-size: 19px;
+            font-weight: bold;
+            color: #1e3a5f;
+        }
+
+        .note {
+            color: #666;
+            font-size: 13px;
+            line-height: 1.5;
+            margin-top: 8px;
+        }
+
+        .message {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 6px;
+            display: none;
+            overflow-wrap: anywhere;
+        }
+
+        footer {
+            background: #1e3a5f;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 800px) {
+            .booking-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .booking-box, .summary-box {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo">Smart Hotel Booking</div>
+
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="Rooms.html">Rooms</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+            <a href="login.html">Login</a>
+        </div>
+    </nav>
+
+    <header class="page-header">
+        <h1>BOOK YOUR ROOM</h1>
+        <p>Book your stay easily and securely</p>
+    </header>
+
+    <main class="container">
+        <div class="booking-container">
+
+            <!-- BOOKING FORM -->
+            <section class="booking-box">
+                <h2>Guest Information</h2>
+
+                <form id="bookingForm">
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="fullName">Full Name *</label>
+                            <input type="text" id="fullName" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="phone">Phone Number *</label>
+                            <input type="tel" id="phone" pattern="[0-9]{10}"
+                                   maxlength="10" placeholder="10-digit mobile number"
+                                   required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="roomType">Room Type *</label>
+                            <select id="roomType" required>
+                                <option value="Deluxe">Deluxe Room - ₹4000/night</option>
+                                <option value="Luxury">Luxury Room - ₹6000/night</option>
+                                <option value="Family">Family Room - ₹4000/night</option>
+                                
+                                <option value="Standard">Standard Room - ₹3000/night</option>
+                                <option value="ExecutiveSuite">Executive Suite Room - ₹7000/night</option>
+                                <option value="Premium">Premium Room - ₹6000/night</option>
+                                
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="checkIn">Check-in Date *</label>
+                            <input type="date" id="checkIn" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="checkOut">Check-out Date *</label>
+                            <input type="date" id="checkOut" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="adults">Adults *</label>
+                            <input type="number" id="adults" min="1" value="2" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="children">Children</label>
+                            <input type="number" id="children" min="0" value="0">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="roomCount">Number of Rooms *</label>
+                        <select id="roomCount" required>
+                            <option value="1">1 Room</option>
+                            <option value="2">2 Rooms</option>
+                            <option value="3">3 Rooms</option>
+                            <option value="4">4 Rooms</option>
+                            <option value="5">5 Rooms</option>
+                        </select>
+                    </div>
+
+                    <h3>Government ID Proof</h3>
+
+                    <p class="note">
+                        Enter the required ID details for the primary guest.
+                        Collect only information your hotel actually needs.
+                    </p>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="idType">ID Proof Type *</label>
+                            <select id="idType" required>
+                                <option value="">Select ID type</option>
+                                <option value="Aadhaar">Aadhaar Card</option>
+                                <option value="Passport">Passport</option>
+                                <option value="Driving Licence">Driving Licence</option>
+                                <option value="Voter ID">Voter ID</option>
+                                <option value="Other">Other Government ID</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="idNumber">ID Number *</label>
+                            <input type="text" id="idNumber"
+                                   placeholder="Enter ID number" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="idFile">Upload ID Proof *</label>
+                        <input type="file" id="idFile"
+                               accept="image/*,.pdf">
+                        <p class="note">
+                            Upload only if required by your hotel's process.
+                            Avoid uploading unnecessary personal documents.
+                        </p>
+                    </div>
+
+                    <h3>Live Camera Photo</h3>
+
+                    <p class="note">
+                        Take a photo for the booking record. This camera feature
+                        does not itself recognize a face or verify an ID.
+                    </p>
+
+                    <div class="camera-box">
+                        <video id="camera" autoplay playsinline></video>
+                        <canvas id="canvas" hidden></canvas>
+                        <img id="photoPreview" alt="Captured photo preview">
+
+                        <button type="button" class="small-btn" id="startCamera">
+                            Start Camera
+                        </button>
+
+                        <button type="button" class="small-btn" id="capturePhoto">
+                            Capture Photo
+                        </button>
+
+                        <button type="button" class="small-btn" id="retakePhoto">
+                            Retake Photo
+                        </button>
+
+                        <p class="note" id="cameraStatus">
+                            Camera is not started.
+                        </p>
+                    </div>
+
+                    <div id="formMessage" class="message"></div>
+
+                    <button type="submit" class="continue-btn" id="submitButton">
+                        Continue to Payment
+                    </button>
+
+                </form>
+            </section>
+
+            <!-- BOOKING SUMMARY -->
+            <aside class="summary-box">
+                <h2>Booking Summary</h2>
+
+                <img id="summaryRoomImage"
+                class="room-image"
+                src="https://images.unsplash.com/photo-1566665797739-1674de7a421a"
+                alt="Selected hotel room">
+
+                <div class="room-name" id="summaryRoomName">Deluxe Room</div>
+
+                <div class="summary-row">
+                    <span>Check-in</span>
+                    <strong id="summaryCheckIn">Not selected</strong>
+                </div>
+
+                <div class="summary-row">
+                    <span>Check-out</span>
+                    <strong id="summaryCheckOut">Not selected</strong>
+                </div>
+
+                <div class="summary-row">
+                    <span>Number of nights</span>
+                    <strong id="summaryNights">0</strong>
+                </div>
+
+                <div class="summary-row">
+                    <span>Rooms</span>
+                    <strong id="summaryRooms">1</strong>
+                </div>
+
+                <div class="summary-row">
+                    <span>Room charges</span>
+                    <strong id="roomPrice">₹0</strong>
+                </div>
+
+                <div class="summary-row">
+                    <span>Service charge (10%)</span>
+                    <strong id="serviceCharge">₹0</strong>
+                </div>
+
+                <div class="summary-row">
+                    <span>Estimated tax (18%)</span>
+                    <strong id="taxAmount">₹0</strong>
+                </div>
+
+                <div class="summary-row total">
+                    <span>Total Amount</span>
+                    <strong id="totalAmount">₹0</strong>
+                </div>
+
+                <p class="note">
+                    This is an estimated amount. Final room allocation and
+                    availability must be confirmed by the server.
+                </p>
+            </aside>
+
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Smart Hotel. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        const form = document.getElementById("bookingForm");
+        const roomType = document.getElementById("roomType");
+        const checkIn = document.getElementById("checkIn");
+        const checkOut = document.getElementById("checkOut");
+        const roomCount = document.getElementById("roomCount");
+
+        const camera = document.getElementById("camera");
+        const canvas = document.getElementById("canvas");
+        const photoPreview = document.getElementById("photoPreview");
+        const cameraStatus = document.getElementById("cameraStatus");
+        const formMessage = document.getElementById("formMessage");
+
+        let cameraStream = null;
+        let capturedPhotoData = null;
+
+       
+const roomDetails = {
+    "Deluxe": {
+        name: "Deluxe Room",
+        image: "https://images.unsplash.com/photo-1566665797739-1674de7a421a"
+    },
+    "Luxury": {
+        name: "Luxury Room",
+        image: "https://sonno.co.uk/cdn/shop/articles/Luxury_Bedroom_Ideas_on_Budget_592e894b-3892-4fa7-a4b2-dfef47c65a58.jpg?v=1769600094"
+    },
+    "Family": {
+        name: "Family Room",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTO5VUGOFHzhTJDv-KqdGfp0EVS9tkqD4NQZJZwyFe0zQ&s"
+    },
+    "Standard": {
+        name: "Standard Room",
+        image: "https://bookings.vythirivillage.com/storage/tenants/1/rooms/3HivwpAdI1fEdgZpxJYLSpSvVDjRJdQ4yuaBuRCM.jpg"
+    },
+    "ExecutiveSuite": {
+        name: "Executive Suite Room",
+        image: "https://images.unsplash.com/photo-1590490360182-c33d57733427"
+    },
+    "Premium": {
+        name: "Premium Room",
+        image: "https://thelalit.com/wp-content/uploads/2024/10/PremierRoom-A.jpg"
+    }
+};
+
+const roomPrices = {
+    "Deluxe": 4000,
+    "Luxury": 6000,
+    "Family": 4000,
+    "Standard": 3000,
+    "ExecutiveSuite": 7000,
+    "Premium": 6000
+};
+
+function formatCurrency(amount) {
+    return "₹" + Math.round(amount).toLocaleString("en-IN");
+}
+
+function showMessage(message, isError = true) {
+    formMessage.style.display = "block";
+    formMessage.textContent = message;
+    formMessage.style.background = isError ? "#ffe8e8" : "#e6f7e9";
+    formMessage.style.color = isError ? "#9b1c1c" : "#17652a";
+}
+
+
+// Rooms.html se selected room read karein
+const selectedRoom = new URLSearchParams(window.location.search).get("room");
+
+const roomQueryMap = {
+    deluxe: "Deluxe",
+    luxury: "Luxury",
+    family: "Family",
+    standard: "Standard",
+    suite: "ExecutiveSuite",
+    executivesuite: "ExecutiveSuite",
+    premium: "Premium"
+};
+
+if (selectedRoom && roomQueryMap[selectedRoom.toLowerCase()]) {
+    roomType.value = roomQueryMap[selectedRoom.toLowerCase()];
+}
+
+
+        
+function updateSummary() {
+    const start = checkIn.value
+        ? new Date(checkIn.value + "T00:00:00")
+        : null;
+
+    const end = checkOut.value
+        ? new Date(checkOut.value + "T00:00:00")
+        : null;
+
+    let nights = 0;
+
+    if (start && end && end > start) {
+        nights = Math.round(
+            (end - start) / (1000 * 60 * 60 * 24)
+        );
+    }
+
+    const count = Number(roomCount.value);
+    const selectedType = roomType.value;
+    const price = roomPrices[selectedType] || 0;
+    const details = roomDetails[selectedType];
+
+    const roomTotal = price * nights * count;
+    const service = roomTotal * 0.10;
+    const tax = (roomTotal + service) * 0.18;
+    const total = roomTotal + service + tax;
+
+    document.getElementById("summaryRoomName").textContent =
+        details ? details.name : "Select a Room";
+
+    const summaryImage = document.getElementById("summaryRoomImage");
+
+    if (details && summaryImage) {
+        summaryImage.src = details.image;
+        summaryImage.alt = details.name;
+    }
+
+    document.getElementById("summaryCheckIn").textContent =
+        checkIn.value || "Not selected";
+
+    document.getElementById("summaryCheckOut").textContent =
+        checkOut.value || "Not selected";
+
+    document.getElementById("summaryNights").textContent = nights;
+    document.getElementById("summaryRooms").textContent = count;
+
+    document.getElementById("roomPrice").textContent =
+        formatCurrency(roomTotal);
+
+    document.getElementById("serviceCharge").textContent =
+        formatCurrency(service);
+
+    document.getElementById("taxAmount").textContent =
+        formatCurrency(tax);
+
+    document.getElementById("totalAmount").textContent =
+        formatCurrency(total);
+}
+
+
+        roomType.addEventListener("change", updateSummary);
+        checkIn.addEventListener("change", updateSummary);
+        checkOut.addEventListener("change", updateSummary);
+        roomCount.addEventListener("change", updateSummary);
+
+        // Set the earliest selectable check-in date to today.
+        const today = new Date();
+        const localToday = new Date(
+            today.getTime() - today.getTimezoneOffset() * 60000
+        ).toISOString().split("T")[0];
+
+        checkIn.min = localToday;
+        checkOut.min = localToday;
+
+        checkIn.addEventListener("change", function () {
+            checkOut.min = checkIn.value || localToday;
+
+            if (checkOut.value && checkOut.value <= checkIn.value) {
+                checkOut.value = "";
+            }
+
+            updateSummary();
+        });
+
+        // Start camera
+        document.getElementById("startCamera").addEventListener("click", async function () {
+            try {
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    throw new Error("Camera access is not supported by this browser.");
+                }
+
+                cameraStream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: "user" },
+                    audio: false
+                });
+
+                camera.srcObject = cameraStream;
+                camera.style.display = "block";
+                photoPreview.style.display = "none";
+                cameraStatus.textContent = "Camera started. Look at the camera and capture your photo.";
+            } catch (error) {
+                cameraStatus.textContent =
+                    "Unable to start camera. Allow camera permission and use localhost or HTTPS.";
+                console.error(error);
+            }
+        });
+
+        // Capture camera photo
+        document.getElementById("capturePhoto").addEventListener("click", function () {
+            if (!cameraStream || !camera.videoWidth) {
+                cameraStatus.textContent = "Please start the camera first.";
+                return;
+            }
+
+            canvas.width = camera.videoWidth;
+            canvas.height = camera.videoHeight;
+
+            const context = canvas.getContext("2d");
+            context.drawImage(camera, 0, 0, canvas.width, canvas.height);
+
+            capturedPhotoData = canvas.toDataURL("image/jpeg", 0.8);
+
+            photoPreview.src = capturedPhotoData;
+            photoPreview.style.display = "block";
+            camera.style.display = "none";
+
+            cameraStatus.textContent = "Photo captured successfully.";
+        });
+
+        // Retake photo
+        document.getElementById("retakePhoto").addEventListener("click", function () {
+            capturedPhotoData = null;
+            photoPreview.src = "";
+            photoPreview.style.display = "none";
+
+            if (cameraStream) {
+                camera.style.display = "block";
+                cameraStatus.textContent = "Ready to capture another photo.";
+            } else {
+                cameraStatus.textContent = "Start the camera first.";
+            }
+        });
+
+        function stopCamera() {
+            if (cameraStream) {
+                cameraStream.getTracks().forEach(track => track.stop());
+                cameraStream = null;
+            }
+        }
+
+        // Submit booking
+        form.addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const start = new Date(checkIn.value + "T00:00:00");
+            const end = new Date(checkOut.value + "T00:00:00");
+
+            if (end <= start) {
+                showMessage("Check-out date must be after check-in date.");
+                return;
+            }
+
+            const nights = Math.round((end - start) / (1000 * 60 * 60 * 24));
+            const count = Number(roomCount.value);
+            const roomRate = roomPrices[roomType.value];
+            const roomTotal = roomRate * nights * count;
+            const service = roomTotal * 0.10;
+            const tax = (roomTotal + service) * 0.18;
+            const total = roomTotal + service + tax;
+
+            const bookingData = {
+                full_name: document.getElementById("fullName").value.trim(),
+                email: document.getElementById("email").value.trim(),
+                phone: document.getElementById("phone").value.trim(),
+
+                room_type: roomType.value,
+                rooms_count: count,
+                check_in: checkIn.value,
+                check_out: checkOut.value,
+                nights: nights,
+
+                adults: Number(document.getElementById("adults").value),
+                children: Number(document.getElementById("children").value),
+
+                id_type: document.getElementById("idType").value,
+                id_number: document.getElementById("idNumber").value.trim(),
+
+                // This is a captured photo, not face recognition.
+                live_photo: capturedPhotoData,
+
+                room_price: roomTotal,
+                service_charge: service,
+                tax_amount: tax,
+                total_amount: Math.round(total)
+            };
+
+            const submitButton = document.getElementById("submitButton");
+            submitButton.disabled = true;
+            submitButton.textContent = "Processing...";
+
+            try {
+                const response = await fetch("http://localhost:5000/api/bookings", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(bookingData)
+                });
+
+                const result = await response.json().catch(() => ({}));
+
+                if (!response.ok) {
+                    throw new Error(result.message || "Booking failed. Please try again.");
+                }
+
+                // Avoid storing ID numbers or captured photos in localStorage.
+                const paymentBooking = {
+                    booking_id: result.booking_id || result.id || null,
+                    full_name: bookingData.full_name,
+                    email: bookingData.email,
+                    phone: bookingData.phone,
+                    room_type: bookingData.room_type,
+                    rooms_count: bookingData.rooms_count,
+                    check_in: bookingData.check_in,
+                    check_out: bookingData.check_out,
+                    nights: bookingData.nights,
+                    total_amount: bookingData.total_amount
+                };
+
+                localStorage.setItem("currentBooking", JSON.stringify(paymentBooking));
+
+                stopCamera();
+                window.location.href = "payment.html";
+
+            } catch (error) {
+                console.error("Booking error:", error);
+
+                showMessage(
+                    error.message.includes("Failed to fetch")
+                        ? "Backend server se connection nahi ho raha. Check karein ki Node.js server port 5000 par chal raha hai."
+                        : error.message
+                );
+
+                submitButton.disabled = false;
+                submitButton.textContent = "Continue to Payment";
+            }
+        });
+
+        window.addEventListener("beforeunload", stopCamera);
+
+        updateSummary();
+    </script>
+
+</body>
+</html>

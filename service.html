@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Services - Hotel</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f7f8fa;
+            color: #222;
+        }
+
+        /* Navbar */
+        header {
+            background: #111827;
+            padding: 18px 7%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            color: #fff;
+            font-size: 27px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #f59e0b;
+        }
+
+        nav {
+            display: flex;
+            gap: 28px;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: #f59e0b;
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 430px;
+            background:
+                linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,.55)),
+                url("https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1600&q=80")
+                center/cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 30px;
+        }
+
+        .hero-content h1 {
+            font-size: 52px;
+            margin-bottom: 15px;
+        }
+
+        .hero-content p {
+            font-size: 19px;
+            max-width: 700px;
+            line-height: 1.7;
+        }
+
+        /* Section */
+        .services-section {
+            padding: 70px 7%;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .section-title h2 {
+            font-size: 38px;
+            color: #111827;
+            margin-bottom: 12px;
+        }
+
+        .section-title p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        /* Cards */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 14px;
+            padding: 35px 25px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,.08);
+            transition: .3s;
+            border: 1px solid #eee;
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0,0,0,.14);
+        }
+
+        .icon {
+            width: 75px;
+            height: 75px;
+            margin: auto;
+            border-radius: 50%;
+            background: #fff7e6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 35px;
+            margin-bottom: 22px;
+        }
+
+        .service-card h3 {
+            font-size: 22px;
+            margin-bottom: 12px;
+            color: #111827;
+        }
+
+        .service-card p {
+            color: #666;
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        /* Feature Banner */
+        .feature {
+            margin: 20px 7% 70px;
+            background:
+                linear-gradient(rgba(17,24,39,.85), rgba(17,24,39,.85)),
+                url("https://images.unsplash.com/photo-1540541338287-41700207dee6?auto=format&fit=crop&w=1600&q=80")
+                center/cover;
+            padding: 70px 40px;
+            border-radius: 18px;
+            text-align: center;
+            color: white;
+        }
+
+        .feature h2 {
+            font-size: 38px;
+            margin-bottom: 15px;
+        }
+
+        .feature p {
+            max-width: 750px;
+            margin: auto;
+            line-height: 1.8;
+            color: #ddd;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 13px 28px;
+            background: #f59e0b;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+            font-weight: bold;
+            transition: .3s;
+        }
+
+        .btn:hover {
+            background: #d97706;
+        }
+
+        /* Footer */
+        footer {
+            background: #111827;
+            color: white;
+            padding: 50px 7% 20px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 35px;
+            margin-bottom: 35px;
+        }
+
+        footer h3 {
+            margin-bottom: 18px;
+            color: #f59e0b;
+        }
+
+        footer p {
+            color: #cbd5e1;
+            line-height: 1.8;
+            font-size: 14px;
+        }
+
+        footer ul {
+            list-style: none;
+        }
+
+        footer ul li {
+            margin-bottom: 10px;
+        }
+
+        footer ul li a {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        footer ul li a:hover {
+            color: #f59e0b;
+        }
+
+        .copyright {
+            border-top: 1px solid #374151;
+            padding-top: 20px;
+            text-align: center;
+            color: #9ca3af;
+            font-size: 14px;
+        }
+
+        /* Mobile */
+        @media (max-width: 900px) {
+            .services-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .hero {
+                min-height: 350px;
+            }
+
+            .hero-content h1 {
+                font-size: 38px;
+            }
+
+            .hero-content p {
+                font-size: 15px;
+            }
+
+            .services-section {
+                padding: 50px 5%;
+            }
+
+            .section-title h2 {
+                font-size: 30px;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .feature {
+                margin: 10px 5% 50px;
+                padding: 50px 25px;
+            }
+
+            .feature h2 {
+                font-size: 29px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <header>
+        <div class="logo">Smart Hotel Booking<span></span></div>
+
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="rooms.html">Rooms</a>
+            <a href="booking.html">Booking</a>
+            <a href="service.html" class="active">Services</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+            
+        </nav>
+    </header>
+
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Our Services</h1>
+            <p>
+                Experience premium hospitality and enjoy a wide range of
+                services designed to make your stay comfortable, relaxing and memorable.
+            </p>
+        </div>
+    </section>
+
+
+    <!-- Services -->
+    <section class="services-section">
+
+        <div class="section-title">
+            <h2>What We Offer</h2>
+            <p>Everything you need for a comfortable and enjoyable stay.</p>
+        </div>
+
+        <div class="services-grid">
+
+            <div class="service-card">
+                <div class="icon">🛎️</div>
+                <h3>24/7 Room Service</h3>
+                <p>
+                    Enjoy delicious meals, beverages and other essentials
+                    delivered directly to your room at any time.
+                </p>
+            </div>
+
+            <div class="service-card">
+                <div class="icon">🧹</div>
+                <h3>Housekeeping</h3>
+                <p>
+                    Our professional housekeeping team keeps your room
+                    clean, fresh and comfortable throughout your stay.
+                </p>
+            </div>
+
+            <div class="service-card">
+                <div class="icon">🍽️</div>
+                <h3>Restaurant & Dining</h3>
+                <p>
+                    Enjoy a wide variety of delicious dishes prepared by
+                    our experienced chefs using fresh ingredients.
+                </p>
+            </div>
+
+            <div class="service-card">
+                <div class="icon">🚕</div>
+                <h3>Airport Transfer</h3>
+                <p>
+                    Travel comfortably with our convenient airport pickup
+                    and drop-off service.
+                </p>
+            </div>
+
+            <div class="service-card">
+                <div class="icon">🧺</div>
+                <h3>Laundry Service</h3>
+                <p>
+                    Get your clothes professionally cleaned and delivered
+                    back to your room quickly.
+                </p>
+            </div>
+
+            <div class="service-card">
+                <div class="icon">📶</div>
+                <h3>Free Wi-Fi</h3>
+                <p>
+                    Stay connected with high-speed complimentary Wi-Fi
+                    available throughout the hotel.
+                </p>
+            </div>
+
+            <div class="service-card">
+                <div class="icon">🏊</div>
+                <h3>Swimming Pool</h3>
+                <p>
+                    Relax and refresh yourself in our clean and beautiful
+                    swimming pool area.
+                </p>
+            </div>
+
+            <div class="service-card">
+                <div class="icon">💆</div>
+                <h3>Spa & Wellness</h3>
+                <p>
+                    Rejuvenate your body and mind with our relaxing spa
+                    and wellness facilities.
+                </p>
+            </div>
+
+            <div class="service-card">
+                <div class="icon">🅿️</div>
+                <h3>Free Parking</h3>
+                <p>
+                    Secure parking facilities are available for our guests
+                    throughout their stay.
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- Feature Banner -->
+    <section class="feature">
+        <h2>Everything You Need, All in One Place</h2>
+
+        <p>
+            From comfortable rooms and delicious dining to wellness,
+            transportation and 24/7 assistance, we are committed to
+            providing an exceptional hotel experience.
+        </p>
+
+        <a href="rooms.html" class="btn">Book Your Room</a>
+    </section>
+
+
+    <!-- Footer -->
+    <footer>
+
+        <div class="footer-grid">
+
+            <div>
+                <h3>HotelLux</h3>
+                <p>
+                    Welcome to HotelLux, where comfort, luxury and
+                    exceptional hospitality come together to create
+                    unforgettable experiences.
+                </p>
+            </div>
+
+            <div>
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="rooms.html">Rooms</a></li>
+                    <li><a href="service.html">Services</a></li>
+                    <li><a href="about.html">About</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h3>Services</h3>
+                <ul>
+                    <li><a href="#">Room Service</a></li>
+                    <li><a href="#">Housekeeping</a></li>
+                    <li><a href="#">Restaurant</a></li>
+                    <li><a href="#">Airport Transfer</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h3>Contact</h3>
+                <p>📍 Asansol, India</p>
+                <p>📞 +91 1800-123-4567</p>
+                <p>✉️ info@smarthotel.com</p>
+            </div>
+
+        </div>
+
+        <div class="copyright">
+            © 2026 HotelLux. All Rights Reserved.
+        </div>
+
+    </footer>
+
+</body>
+</html>
+```

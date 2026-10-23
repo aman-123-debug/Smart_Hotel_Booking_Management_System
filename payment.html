@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Booking - Payment</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        .navbar {
+            background: #1e3a5f;
+            color: white;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+        .nav-links a:hover {
+            color: #ffd166;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 40px auto;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .page-title h1 {
+            color: #1e3a5f;
+            margin-bottom: 8px;
+        }
+
+        .page-title p {
+            color: #777;
+        }
+
+        .payment-container {
+            display: grid;
+            grid-template-columns: 1.3fr 1fr;
+            gap: 25px;
+        }
+
+        .payment-box,
+        .summary-box {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .payment-box h2,
+        .summary-box h2 {
+            color: #1e3a5f;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+            outline: none;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #1e3a5f;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .payment-method {
+            margin-top: 20px;
+            margin-bottom: 12px;
+        }
+
+        .payment-method h3 {
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+
+        .method {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .method input {
+            accent-color: #1e3a5f;
+        }
+
+        .method label {
+            cursor: pointer;
+        }
+
+        .method-details {
+            display: none;
+            background: #f5f7fa;
+            padding: 15px;
+            border-radius: 7px;
+            margin: 10px 0 20px;
+        }
+
+        .method-details label {
+            display: block;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 7px;
+        }
+
+        .method-details input,
+        .method-details select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+            outline: none;
+            background: white;
+        }
+
+        .upi-payment {
+            text-align: center;
+        }
+
+        .upi-payment img {
+            width: 210px;
+            height: 210px;
+            object-fit: contain;
+            display: block;
+            margin: 12px auto;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            background: white;
+        }
+
+        .upi-note,
+        .netbank-note {
+            margin-top: 8px;
+            font-size: 12px;
+            color: #777;
+            line-height: 1.5;
+        }
+
+        .pay-btn {
+            width: 100%;
+            padding: 14px;
+            background: #1e3a5f;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .pay-btn:hover {
+            background: #162d49;
+        }
+
+        .pay-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.85;
+        }
+
+        .room-name {
+            font-size: 21px;
+            font-weight: bold;
+            color: #1e3a5f;
+            margin-bottom: 18px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 14px;
+            color: #555;
+        }
+
+        .summary-row strong {
+            color: #222;
+        }
+
+        .divider {
+            border: none;
+            border-top: 1px solid #ddd;
+            margin: 18px 0;
+        }
+
+        .total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 20px;
+            font-weight: bold;
+            color: #1e3a5f;
+        }
+
+        .secure {
+            text-align: center;
+            margin-top: 25px;
+            color: #388e3c;
+            font-size: 14px;
+        }
+
+        .success {
+            display: none;
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 15px;
+            border-radius: 7px;
+            text-align: center;
+            margin-top: 20px;
+            font-weight: bold;
+            line-height: 1.6;
+        }
+
+        footer {
+            background: #1e3a5f;
+            color: white;
+            text-align: center;
+            padding: 18px;
+            margin-top: 50px;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .payment-container {
+                grid-template-columns: 1fr;
+            }
+
+            .row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="logo">HOTEL BOOKING</div>
+
+    <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="rooms.html">Rooms</a>
+        <a href="booking.html">Booking</a>
+        <a href="contact.html">Contact</a>
+    </div>
+</nav>
+
+<div class="container">
+
+    <div class="page-title">
+        <h1>Complete Payment</h1>
+        <p>Securely complete your hotel booking</p>
+    </div>
+
+    <div class="payment-container">
+
+        <div class="payment-box">
+
+            <h2>Payment Details</h2>
+
+            <form id="paymentForm">
+
+                <!-- CARD DETAILS -->
+                <div id="cardDetails">
+
+                    <div class="form-group">
+                        <label>Card Holder Name</label>
+                        <input
+                            type="text"
+                            id="cardName"
+                            placeholder="Enter card holder name">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Card Number</label>
+                        <input
+                            type="text"
+                            id="cardNumber"
+                            placeholder="XXXX XXXX XXXX XXXX"
+                            maxlength="19"
+                            inputmode="numeric">
+                    </div>
+
+                    <div class="row">
+
+                        <div class="form-group">
+                            <label>Expiry Date</label>
+                            <input
+                                type="text"
+                                id="expiry"
+                                placeholder="MM/YY"
+                                maxlength="5"
+                                inputmode="numeric">
+                        </div>
+
+                        <div class="form-group">
+                            <label>CVV</label>
+                            <input
+                                type="password"
+                                id="cvv"
+                                placeholder="XXX"
+                                maxlength="3"
+                                inputmode="numeric">
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- PAYMENT METHODS -->
+                <div class="payment-method">
+
+                    <h3>Payment Method</h3>
+
+                    <div class="method">
+                        <input
+                            type="radio"
+                            name="payment"
+                            value="card"
+                            checked>
+                        <label>Credit / Debit Card</label>
+                    </div>
+
+                    <div class="method">
+                        <input
+                            type="radio"
+                            name="payment"
+                            value="upi">
+                        <label>UPI</label>
+                    </div>
+
+                    <div class="method">
+                        <input
+                            type="radio"
+                            name="payment"
+                            value="netbanking">
+                        <label>Net Banking</label>
+                    </div>
+
+                </div>
+
+                <!-- UPI DETAILS -->
+                <div class="method-details" id="upiDetails">
+
+                    <div class="upi-payment">
+
+                        <strong>Scan & Pay with UPI</strong>
+
+                        <img
+                            src="images/qr code.jpeg"
+                            alt="Hotel UPI QR Code">
+
+                        <div class="upi-note">
+                            Scan this QR code using your UPI app.
+                            <br>
+                            UPI ID:
+                            <strong id="hotelUpiId">7047357515@naviaxis</strong>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group" style="margin-top:15px; margin-bottom:0;">
+                        <label for="upiId">Your UPI ID (optional)</label>
+
+                        <input
+                            type="text"
+                            id="upiId"
+                            placeholder="example@upi">
+
+                        <div class="upi-note">
+                            For demo payment verification only.
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- NET BANKING DETAILS -->
+                <div class="method-details" id="netbankingDetails">
+
+                    <div class="form-group" style="margin-bottom:0;">
+
+                        <label for="bankName">
+                            Select Bank
+                        </label>
+
+                        <select id="bankName">
+
+                            <option value="">
+                                Select your bank
+                            </option>
+
+                            <option value="SBI">
+                                State Bank of India
+                            </option>
+
+                            <option value="HDFC">
+                                HDFC Bank
+                            </option>
+
+                            <option value="ICICI">
+                                ICICI Bank
+                            </option>
+
+                            <option value="Axis">
+                                Axis Bank
+                            </option>
+
+                            <option value="PNB">
+                                Punjab National Bank
+                            </option>
+
+                            <option value="BOB">
+                                Bank of Baroda
+                            </option>
+
+                        </select>
+
+                        <div class="netbank-note">
+                            Select your bank to continue.
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="pay-btn"
+                    id="payButton">
+                    PAY NOW
+                </button>
+
+            </form>
+
+            <div
+                class="success"
+                id="successMessage">
+                ✓ Payment Successful! Your booking is confirmed.
+            </div>
+
+            <div class="secure">
+                🔒 Your payment information is secure
+            </div>
+
+        </div>
+
+        <!-- BOOKING SUMMARY -->
+        <div class="summary-box">
+
+            <h2>Booking Summary</h2>
+
+            <div class="room-name" id="summaryRoom">
+                -
+            </div>
+
+            <div class="summary-row">
+                <span>Check-in</span>
+                <strong id="summaryCheckin">-</strong>
+            </div>
+
+            <div class="summary-row">
+                <span>Check-out</span>
+                <strong id="summaryCheckout">-</strong>
+            </div>
+
+            <div class="summary-row">
+                <span>Guests</span>
+                <strong id="summaryGuests">-</strong>
+            </div>
+
+            <div class="summary-row">
+                <span>Room Price</span>
+                <strong id="summaryPrice">₹0 / night</strong>
+            </div>
+
+            <div class="summary-row">
+                <span>Number of Nights</span>
+                <strong id="summaryNights">0</strong>
+            </div>
+
+            <hr class="divider">
+
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <strong id="subtotal">₹0</strong>
+            </div>
+
+            <div class="summary-row">
+                <span>Tax (12%)</span>
+                <strong id="tax">₹0</strong>
+            </div>
+
+            <hr class="divider">
+
+            <div class="total">
+                <span>Total</span>
+                <span id="total">₹0</span>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<footer>
+    © 2026 Smart Hotel Management System
+</footer>
+
+<script>
+
+    /* ================= GET BOOKING DATA ================= */
+
+    const bookingJSON =
+        localStorage.getItem("hotelBooking");
+
+    if (!bookingJSON) {
+
+        alert(
+            "Booking information not found. Please complete booking first."
+        );
+
+        window.location.href =
+            "booking.html";
+
+    }
+
+    const booking =
+        JSON.parse(bookingJSON);
+
+
+    /* ================= ROOM DATA ================= */
+
+    const rooms = {
+
+        standard: {
+            name: "Standard Room",
+            price: 3000
+        },
+
+        deluxe: {
+            name: "Deluxe Room",
+            price: 4000
+        },
+
+        family: {
+            name: "Family Room",
+            price: 4000
+        },
+
+        luxury: {
+            name: "Luxury Room",
+            price: 6000
+        },
+
+        premium: {
+            name: "Premium Room",
+            price: 6000
+        },
+
+        suite: {
+            name: "Executive Suite Room",
+            price: 7000
+        }
+
+    };
+
+
+    /* ================= CALCULATE NIGHTS ================= */
+
+    function calculateNights(checkin, checkout) {
+
+        const date1 =
+            new Date(checkin);
+
+        const date2 =
+            new Date(checkout);
+
+        const difference =
+            date2 - date1;
+
+        const nights =
+            Math.ceil(
+                difference /
+                (1000 * 60 * 60 * 24)
+            );
+
+        return nights > 0
+            ? nights
+            : 1;
+    }
+
+
+    /* ================= FORMAT DATE ================= */
+
+    function formatDate(dateString) {
+
+        if (!dateString) {
+            return "-";
+        }
+
+        const date =
+            new Date(
+                dateString + "T00:00:00"
+            );
+
+        return date.toLocaleDateString(
+            "en-GB",
+            {
+                day: "2-digit",
+                month: "short",
+                year: "numeric"
+            }
+        );
+    }
+
+
+    /* ================= LOAD BOOKING ================= */
+
+    const room =
+        rooms[booking.room] || {
+
+            name:
+                booking.roomName ||
+                "Hotel Room",
+
+            price: 0
+
+        };
+
+
+    const nights =
+        calculateNights(
+            booking.checkin,
+            booking.checkout
+        );
+
+
+    const adults =
+        parseInt(
+            booking.adults || 0
+        );
+
+
+    const children =
+        parseInt(
+            booking.children || 0
+        );
+
+
+    const guests =
+        booking.guests
+            ? parseInt(booking.guests)
+            : adults + children;
+
+
+    const subtotal =
+        room.price * nights;
+
+
+    const tax =
+        subtotal * 0.12;
+
+
+    const total =
+        subtotal + tax;
+
+
+    /* ================= SHOW BOOKING DATA ================= */
+
+    document.getElementById(
+        "summaryRoom"
+    ).textContent =
+        room.name;
+
+
+    document.getElementById(
+        "summaryCheckin"
+    ).textContent =
+        formatDate(
+            booking.checkin
+        );
+
+
+    document.getElementById(
+        "summaryCheckout"
+    ).textContent =
+        formatDate(
+            booking.checkout
+        );
+
+
+    document.getElementById(
+        "summaryGuests"
+    ).textContent =
+        guests +
+        (guests === 1
+            ? " Guest"
+            : " Guests");
+
+
+    document.getElementById(
+        "summaryPrice"
+    ).textContent =
+        "₹" +
+        room.price.toLocaleString("en-IN") +
+        " / night";
+
+
+    document.getElementById(
+        "summaryNights"
+    ).textContent =
+        nights;
+
+
+    document.getElementById(
+        "subtotal"
+    ).textContent =
+        "₹" +
+        subtotal.toLocaleString("en-IN");
+
+
+    document.getElementById(
+        "tax"
+    ).textContent =
+        "₹" +
+        tax.toLocaleString("en-IN");
+
+
+    document.getElementById(
+        "total"
+    ).textContent =
+        "₹" +
+        total.toLocaleString("en-IN");
+
+
+    const payButton =
+        document.getElementById(
+            "payButton"
+        );
+
+
+    payButton.textContent =
+        "PAY ₹" +
+        total.toLocaleString("en-IN") +
+        " NOW";
+
+
+    /* ================= CARD FORMATTING ================= */
+
+    document.getElementById(
+        "cardNumber"
+    ).addEventListener(
+        "input",
+        function(e) {
+
+            let value =
+                e.target.value
+                    .replace(/\D/g, "");
+
+            value =
+                value.substring(
+                    0,
+                    16
+                );
+
+            const formatted =
+                value.match(/.{1,4}/g);
+
+            e.target.value =
+                formatted
+                    ? formatted.join(" ")
+                    : "";
+
+        }
+    );
+
+
+    document.getElementById(
+        "expiry"
+    ).addEventListener(
+        "input",
+        function(e) {
+
+            let value =
+                e.target.value
+                    .replace(/\D/g, "");
+
+            value =
+                value.substring(
+                    0,
+                    4
+                );
+
+            if (value.length >= 3) {
+
+                value =
+                    value.substring(0, 2) +
+                    "/" +
+                    value.substring(2);
+
+            }
+
+            e.target.value =
+                value;
+
+        }
+    );
+
+
+    /* ================= PAYMENT METHODS ================= */
+
+    const paymentMethods =
+        document.querySelectorAll(
+            'input[name="payment"]'
+        );
+
+
+    const cardDetails =
+        document.getElementById(
+            "cardDetails"
+        );
+
+
+    const cardInputs = [
+        document.getElementById("cardName"),
+        document.getElementById("cardNumber"),
+        document.getElementById("expiry"),
+        document.getElementById("cvv")
+    ];
+
+
+    const upiDetails =
+        document.getElementById(
+            "upiDetails"
+        );
+
+
+    const netbankingDetails =
+        document.getElementById(
+            "netbankingDetails"
+        );
+
+
+    const upiId =
+        document.getElementById(
+            "upiId"
+        );
+
+
+    const bankName =
+        document.getElementById(
+            "bankName"
+        );
+
+
+    /* ================= UPDATE PAYMENT METHOD ================= */
+
+    function updatePaymentMethod() {
+
+        const selected =
+            document.querySelector(
+                'input[name="payment"]:checked'
+            ).value;
+
+
+        /* Hide all details */
+
+        cardDetails.style.display =
+            "none";
+
+        upiDetails.style.display =
+            "none";
+
+        netbankingDetails.style.display =
+            "none";
+
+
+        cardInputs.forEach(
+            input => {
+                input.required = false;
+            }
+        );
+
+
+        upiId.required = false;
+
+        bankName.required = false;
+
+
+        /* Card */
+
+        if (selected === "card") {
+
+            cardDetails.style.display =
+                "block";
+
+            cardInputs.forEach(
+                input => {
+                    input.required = true;
+                }
+            );
+
+        }
+
+
+        /* UPI */
+
+        else if (selected === "upi") {
+
+            upiDetails.style.display =
+                "block";
+
+            /* UPI ID is optional because QR
+               can be scanned for demo */
+            upiId.required = false;
+
+        }
+
+
+        /* Net Banking */
+
+        else if (selected === "netbanking") {
+
+            netbankingDetails.style.display =
+                "block";
+
+            bankName.required = true;
+
+        }
+
+    }
+
+
+    paymentMethods.forEach(
+        method => {
+
+            method.addEventListener(
+                "change",
+                updatePaymentMethod
+            );
+
+        }
+    );
+
+
+    /* ================= PAYMENT SUBMIT ================= */
+
+document.getElementById("paymentForm")
+    .addEventListener("submit", async function(e) {
+
+        e.preventDefault();
+
+        const selectedMethod =
+            document.querySelector(
+                'input[name="payment"]:checked'
+            ).value;
+
+        /* ================= UPI VALIDATION ================= */
+
+        if (selectedMethod === "upi") {
+
+            const upiValue =
+                document.getElementById("upiId").value.trim();
+
+            if (
+                upiValue &&
+                !/^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+$/.test(upiValue)
+            ) {
+
+                alert(
+                    "Please enter a valid UPI ID. Example: aman@upi"
+                );
+
+                document.getElementById("upiId").focus();
+
+                return;
+            }
+        }
+
+
+        /* ================= NET BANKING VALIDATION ================= */
+
+        if (selectedMethod === "netbanking") {
+
+            const selectedBank =
+                document.getElementById("bankName").value;
+
+            if (!selectedBank) {
+
+                alert("Please select your bank.");
+
+                document.getElementById("bankName").focus();
+
+                return;
+            }
+        }
+
+
+        /* ================= BOOKING ID CHECK ================= */
+
+        const bookingId =
+            booking.booking_id;
+
+        if (!bookingId) {
+
+            alert(
+                "Booking ID not found. Please complete booking again."
+            );
+
+            return;
+        }
+
+
+        /* ================= DISABLE BUTTON ================= */
+
+        payButton.disabled = true;
+
+        payButton.textContent =
+            "PROCESSING PAYMENT...";
+
+
+        try {
+
+            /* ================= SEND PAYMENT TO BACKEND ================= */
+
+            const response =
+                await fetch(
+                    "http://localhost:5000/api/payments",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        body: JSON.stringify({
+
+                            booking_id:
+                                bookingId,
+
+                            payment_method:
+                                selectedMethod,
+
+                            amount:
+                                total
+
+                        })
+                    }
+                );
+
+
+            const result =
+                await response.json();
+
+
+            /* ================= BACKEND ERROR ================= */
+
+            if (!response.ok) {
+
+                throw new Error(
+                    result.error ||
+                    "Payment could not be saved."
+                );
+
+            }
+
+
+            /* ================= PAYMENT SUCCESS ================= */
+
+            const paymentData = {
+
+                ...booking,
+
+                roomName:
+                    room.name,
+
+                roomPrice:
+                    room.price,
+
+                nights:
+                    nights,
+
+                subtotal:
+                    subtotal,
+
+                tax:
+                    tax,
+
+                total:
+                    total,
+
+                paymentMethod:
+                    selectedMethod,
+
+                paymentStatus:
+                    "Paid",
+
+                paymentId:
+                    result.payment_id,
+
+                transactionId:
+                    result.transaction_id,
+
+                paymentTime:
+                    new Date().toISOString()
+
+            };
+
+
+            /* Save UPI ID only if entered */
+
+            if (selectedMethod === "upi") {
+
+                const upiValue =
+                    document.getElementById("upiId").value.trim();
+
+                if (upiValue) {
+                    paymentData.upiId = upiValue;
+                }
+
+            }
+
+
+            /* Save selected bank */
+
+            if (selectedMethod === "netbanking") {
+
+                paymentData.bankName =
+                    document.getElementById("bankName").value;
+
+            }
+
+
+            localStorage.setItem(
+                "hotelPayment",
+                JSON.stringify(paymentData)
+            );
+
+
+            /* ================= SUCCESS MESSAGE ================= */
+
+            document.getElementById(
+                "successMessage"
+            ).innerHTML = `
+                ✓ Payment Successful!<br>
+                Booking Confirmed.<br>
+                Booking ID: ${bookingId}<br>
+                Transaction ID: ${result.transaction_id}
+            `;
+
+
+            document.getElementById(
+                "successMessage"
+            ).style.display = "block";
+
+
+            payButton.textContent =
+                "PAYMENT COMPLETED ✓";
+
+
+            /* Disable all payment controls */
+
+            document.querySelectorAll(
+                "#paymentForm input, #paymentForm select"
+            ).forEach(function(field) {
+
+                field.disabled = true;
+
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "Payment error:",
+                error
+            );
+
+
+            alert(
+                error.message ||
+                "Payment failed. Please try again."
+            );
+
+
+            payButton.disabled = false;
+
+
+            payButton.textContent =
+                "PAY ₹" +
+                total.toLocaleString("en-IN") +
+                " NOW";
+        }
+
+    });
+
+
+/* ================= INITIAL STATE ================= */
+
+updatePaymentMethod();
+</script>
+
+</body>
+</html>

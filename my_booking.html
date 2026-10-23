@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Booking - Smart Hotel</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            background: #1e3a5f;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: white;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+        .nav-links a:hover {
+            color: #ffd166;
+        }
+
+        /* ================= PAGE ================= */
+
+        .container {
+            width: 90%;
+            max-width: 1050px;
+            margin: 45px auto;
+            min-height: 500px;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .page-title h1 {
+            color: #1e3a5f;
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+
+        .page-title p {
+            color: #777;
+            font-size: 15px;
+        }
+
+        /* ================= BOOKING CARD ================= */
+
+        .booking-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .booking-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 18px;
+            margin-bottom: 25px;
+        }
+
+        .booking-top h2 {
+            color: #1e3a5f;
+            font-size: 25px;
+            margin-bottom: 6px;
+        }
+
+        .booking-id {
+            color: #777;
+            font-size: 14px;
+        }
+
+        .status {
+            padding: 9px 15px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .status-confirmed {
+            background: #e8f7ed;
+            color: #198754;
+        }
+
+        .status-cancelled {
+            background: #fdeaea;
+            color: #c62828;
+        }
+
+        /* ================= DETAILS ================= */
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 17px;
+        }
+
+        .detail-box {
+            background: #f8fafc;
+            border: 1px solid #e6e9ee;
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .detail-box .label {
+            display: block;
+            color: #777;
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+
+        .detail-box .value {
+            color: #1e3a5f;
+            font-size: 16px;
+            font-weight: bold;
+            word-break: break-word;
+        }
+
+        /* ================= AMOUNT ================= */
+
+        .amount-box {
+            margin-top: 24px;
+            background: #eef3f8;
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .amount-box span {
+            color: #555;
+            font-size: 16px;
+        }
+
+        .amount-box strong {
+            color: #1e3a5f;
+            font-size: 27px;
+        }
+
+        /* ================= ACTIONS ================= */
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .cancel-btn,
+        .rooms-btn {
+            flex: 1;
+            min-width: 190px;
+            padding: 13px 18px;
+            border-radius: 7px;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .cancel-btn {
+            border: none;
+            background: #c62828;
+            color: white;
+        }
+
+        .cancel-btn:hover {
+            background: #a91f1f;
+        }
+
+        .cancel-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .rooms-btn {
+            background: #1e3a5f;
+            color: white;
+        }
+
+        .rooms-btn:hover {
+            background: #162d49;
+        }
+
+        /* ================= MESSAGES ================= */
+
+        .message {
+            display: none;
+            margin-top: 20px;
+            padding: 14px 16px;
+            border-radius: 7px;
+            text-align: center;
+            font-weight: bold;
+            line-height: 1.5;
+        }
+
+        .success-message {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .error-message {
+            background: #fdeaea;
+            color: #c62828;
+        }
+
+        /* ================= EMPTY ================= */
+
+        .empty-box {
+            display: none;
+            background: white;
+            padding: 40px 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        .empty-box h2 {
+            color: #1e3a5f;
+            margin-bottom: 10px;
+        }
+
+        .empty-box p {
+            color: #777;
+            margin-bottom: 20px;
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            background: #1e3a5f;
+            color: white;
+            text-align: center;
+            padding: 22px;
+            margin-top: 60px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 720px) {
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                justify-content: center;
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .booking-top {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .amount-box {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            SMART HOTEL BOOKING
+        </div>
+
+        <div class="nav-links">
+            <a href="home.html">Home</a>
+            <a href="rooms.html">Rooms</a>
+            <a href="booking.html">Booking</a>
+            <a href="my_booking.html">My Booking</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+            <a href="login.html">Login</a>
+        </div>
+
+    </nav>
+
+    <!-- ================= MAIN ================= -->
+
+    <div class="container">
+
+        <div class="page-title">
+            <h1>My Booking</h1>
+            <p>View your booking details and cancel your booking when needed.</p>
+        </div>
+
+        <!-- BOOKING -->
+
+        <div class="booking-card" id="bookingCard">
+
+            <div class="booking-top">
+
+                <div>
+                    <h2 id="roomName">-</h2>
+
+                    <div class="booking-id" id="bookingId">
+                        Booking ID: -
+                    </div>
+                </div>
+
+                <div
+                    id="statusBadge"
+                    class="status status-confirmed">
+                    Confirmed
+                </div>
+
+            </div>
+
+            <div class="details-grid">
+
+                <div class="detail-box">
+                    <span class="label">Guest Name</span>
+                    <span class="value" id="guestName">-</span>
+                </div>
+
+                <div class="detail-box">
+                    <span class="label">Email</span>
+                    <span class="value" id="guestEmail">-</span>
+                </div>
+
+                <div class="detail-box">
+                    <span class="label">Phone</span>
+                    <span class="value" id="guestPhone">-</span>
+                </div>
+
+                <div class="detail-box">
+                    <span class="label">Room Number</span>
+                    <span class="value" id="roomNumber">-</span>
+                </div>
+
+                <div class="detail-box">
+                    <span class="label">Check-in</span>
+                    <span class="value" id="checkIn">-</span>
+                </div>
+
+                <div class="detail-box">
+                    <span class="label">Check-out</span>
+                    <span class="value" id="checkOut">-</span>
+                </div>
+
+                <div class="detail-box">
+                    <span class="label">Guests</span>
+                    <span class="value" id="guests">-</span>
+                </div>
+
+                <div class="detail-box">
+                    <span class="label">Payment Method</span>
+                    <span class="value" id="paymentMethod">-</span>
+                </div>
+
+            </div>
+
+            <div class="amount-box">
+                <span>Total Amount</span>
+                <strong id="totalAmount">₹0</strong>
+            </div>
+
+            <div class="actions">
+
+                <button
+                    type="button"
+                    id="cancelBtn"
+                    class="cancel-btn">
+                    Cancel Booking
+                </button>
+
+                <a
+                    href="rooms.html"
+                    class="rooms-btn">
+                    Back to Rooms
+                </a>
+
+            </div>
+
+            <div
+                id="successMessage"
+                class="message success-message">
+            </div>
+
+            <div
+                id="errorMessage"
+                class="message error-message">
+            </div>
+
+        </div>
+
+        <!-- EMPTY -->
+
+        <div class="empty-box" id="emptyBox">
+
+            <h2>No Booking Found</h2>
+
+            <p>
+                Please complete a hotel booking first.
+            </p>
+
+            <a
+                href="rooms.html"
+                class="rooms-btn">
+                Browse Rooms
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+        © 2026 Smart Hotel Booking Management System
+    </footer>
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script>
+
+        const bookingJSON =
+            localStorage.getItem("hotelBooking");
+
+        const paymentJSON =
+            localStorage.getItem("hotelPayment");
+
+        const bookingCard =
+            document.getElementById("bookingCard");
+
+        const emptyBox =
+            document.getElementById("emptyBox");
+
+        const cancelBtn =
+            document.getElementById("cancelBtn");
+
+        const successMessage =
+            document.getElementById("successMessage");
+
+        const errorMessage =
+            document.getElementById("errorMessage");
+
+
+        /* ================= FORMAT DATE ================= */
+
+        function formatDate(dateString) {
+
+            if (!dateString) {
+                return "-";
+            }
+
+            const date =
+                new Date(
+                    dateString + "T00:00:00"
+                );
+
+            return date.toLocaleDateString(
+                "en-GB",
+                {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric"
+                }
+            );
+        }
+
+
+        /* ================= SHOW SUCCESS ================= */
+
+        function showSuccess(message) {
+
+            successMessage.textContent =
+                message;
+
+            successMessage.style.display =
+                "block";
+
+            errorMessage.style.display =
+                "none";
+        }
+
+
+        /* ================= SHOW ERROR ================= */
+
+        function showError(message) {
+
+            errorMessage.textContent =
+                message;
+
+            errorMessage.style.display =
+                "block";
+
+            successMessage.style.display =
+                "none";
+        }
+
+
+        /* ================= SET CANCELLED ================= */
+
+       function setCancelledState() {
+
+    bookingCard.style.display = "none";
+
+    emptyBox.style.display = "block";
+
+    emptyBox.querySelector("h2").textContent =
+        "Booking Cancelled";
+
+    emptyBox.querySelector("p").textContent =
+        "Your booking has been cancelled successfully.";
+}
+
+
+        /* ================= LOAD BOOKING ================= */
+
+        if (!bookingJSON) {
+
+            bookingCard.style.display =
+                "none";
+
+            emptyBox.style.display =
+                "block";
+
+        } else {
+
+            const booking =
+                JSON.parse(
+                    bookingJSON
+                );
+
+            let payment = null;
+
+            if (paymentJSON) {
+
+                try {
+
+                    payment =
+                        JSON.parse(
+                            paymentJSON
+                        );
+
+                } catch (error) {
+
+                    console.error(
+                        "Payment data error:",
+                        error
+                    );
+
+                }
+            }
+
+
+            document.getElementById(
+                "roomName"
+            ).textContent =
+                booking.roomName ||
+                "Hotel Room";
+
+
+            document.getElementById(
+                "bookingId"
+            ).textContent =
+                "Booking ID: " +
+                (booking.booking_id || "-");
+
+
+            document.getElementById(
+                "guestName"
+            ).textContent =
+                booking.name ||
+                "-";
+
+
+            document.getElementById(
+                "guestEmail"
+            ).textContent =
+                booking.email ||
+                "-";
+
+
+            document.getElementById(
+                "guestPhone"
+            ).textContent =
+                booking.phone ||
+                "-";
+
+
+            document.getElementById(
+                "roomNumber"
+            ).textContent =
+                booking.room_number ||
+                "Assigned Room";
+
+
+            document.getElementById(
+                "checkIn"
+            ).textContent =
+                formatDate(
+                    booking.checkin
+                );
+
+
+            document.getElementById(
+                "checkOut"
+            ).textContent =
+                formatDate(
+                    booking.checkout
+                );
+
+
+            const totalGuests =
+                booking.guests
+                    ? Number(booking.guests)
+                    : (
+                        Number(booking.adults || 0) +
+                        Number(booking.children || 0)
+                    );
+
+
+            document.getElementById(
+                "guests"
+            ).textContent =
+                totalGuests +
+                (
+                    totalGuests === 1
+                        ? " Guest"
+                        : " Guests"
+                );
+
+
+            document.getElementById(
+                "paymentMethod"
+            ).textContent =
+                payment && payment.paymentMethod
+                    ? String(
+                        payment.paymentMethod
+                    ).toUpperCase()
+                    : "Pending";
+
+
+            let amount = 0;
+
+            if (
+                payment &&
+                payment.total != null
+            ) {
+
+                amount =
+                    Number(payment.total);
+
+            } else if (booking.total) {
+
+                amount =
+                    Number(
+                        String(
+                            booking.total
+                        ).replace(
+                            /[₹,]/g,
+                            ""
+                        )
+                    );
+            }
+
+
+            document.getElementById(
+                "totalAmount"
+            ).textContent =
+                "₹" +
+                amount.toLocaleString(
+                    "en-IN"
+                );
+
+
+            if (
+                booking.status === "cancelled" ||
+                booking.bookingStatus === "cancelled"
+            ) {
+
+                setCancelledState();
+            }
+        }
+
+
+        /* ================= CANCEL BOOKING ================= */
+
+        cancelBtn.addEventListener(
+            "click",
+            async function() {
+
+                const currentBookingJSON =
+                    localStorage.getItem(
+                        "hotelBooking"
+                    );
+
+
+                if (!currentBookingJSON) {
+
+                    showError(
+                        "Booking information not found."
+                    );
+
+                    return;
+                }
+
+
+                const booking =
+                    JSON.parse(
+                        currentBookingJSON
+                    );
+
+
+                const bookingId =
+                    booking.booking_id;
+
+
+                if (!bookingId) {
+
+                    showError(
+                        "Booking ID not found."
+                    );
+
+                    return;
+                }
+
+
+                const confirmCancel =
+                    window.confirm(
+                        "Are you sure you want to cancel this booking?"
+                    );
+
+
+                if (!confirmCancel) {
+                    return;
+                }
+
+
+                cancelBtn.disabled =
+                    true;
+
+                cancelBtn.textContent =
+                    "CANCELLING...";
+
+
+                try {
+
+                    const response =
+                        await fetch(
+                            "http://localhost:5000/api/bookings/" +
+                            bookingId +
+                            "/cancel",
+                            {
+                                method: "POST"
+                            }
+                        );
+
+
+                    const result =
+                        await response.json();
+
+
+                    if (!response.ok) {
+
+                        throw new Error(
+                            result.error ||
+                            "Booking cancellation failed."
+                        );
+                    }
+
+
+                    /* Update local booking */
+
+                    booking.status =
+                        "cancelled";
+
+                    booking.bookingStatus =
+                        "cancelled";
+
+
+                    localStorage.setItem(
+                        "hotelBooking",
+                        JSON.stringify(
+                            booking
+                        )
+                    );
+
+
+                    /* Update local payment info */
+
+                    const latestPaymentJSON =
+                        localStorage.getItem(
+                            "hotelPayment"
+                        );
+
+
+                    if (latestPaymentJSON) {
+
+                        try {
+
+                            const payment =
+                                JSON.parse(
+                                    latestPaymentJSON
+                                );
+
+                            payment.bookingStatus =
+                                "cancelled";
+
+
+                            localStorage.setItem(
+                                "hotelPayment",
+                                JSON.stringify(
+                                    payment
+                                )
+                            );
+
+                        } catch (error) {
+
+                            console.error(
+                                "Payment update error:",
+                                error
+                            );
+                        }
+                    }
+
+
+                    setCancelledState();
+
+
+                    showSuccess(
+                        "Booking cancelled successfully. Room " +
+                        (result.room_number || "") +
+                        " is available again."
+                    );
+
+
+                } catch (error) {
+
+                    console.error(
+                        "Cancellation error:",
+                        error
+                    );
+
+
+                    cancelBtn.disabled =
+                        false;
+
+                    cancelBtn.textContent =
+                        "Cancel Booking";
+
+
+                    showError(
+                        error.message ||
+                        "Could not cancel booking."
+                    );
+                }
+
+            }
+        );
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,651 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Register - Smart Hotel</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            padding: 30px 15px;
+        }
+
+        .register-container {
+            width: 420px;
+            max-width: 100%;
+            background: white;
+            padding: 35px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .register-container h1 {
+            text-align: center;
+            color: #1e3c72;
+            margin-bottom: 8px;
+        }
+
+        .register-container > p {
+            text-align: center;
+            color: #777;
+            margin-bottom: 25px;
+        }
+
+        .input-box {
+            margin-bottom: 17px;
+        }
+
+        .input-box label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .input-box input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .input-box input:focus {
+            border-color: #1e3c72;
+        }
+
+        /* Face Recognition Section */
+        .face-section {
+            margin: 22px 0 18px;
+            padding: 18px 12px;
+            background: #f4f7fc;
+            border: 1px solid #d7e0f0;
+            border-radius: 9px;
+            text-align: center;
+        }
+
+        .face-section h2 {
+            color: #1e3c72;
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .face-section p {
+            color: #666;
+            font-size: 13px;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        #camera,
+        #facePreview {
+            display: block;
+            width: 100%;
+            max-width: 320px;
+            height: 220px;
+            margin: 12px auto;
+            background: #172b4d;
+            border-radius: 7px;
+            object-fit: cover;
+        }
+
+        #facePreview {
+            display: none;
+        }
+
+        .camera-btn {
+            padding: 10px 12px;
+            margin: 4px 2px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .start-btn {
+            background: #1e3c72;
+            color: white;
+        }
+
+        .capture-btn {
+            background: #2a5298;
+            color: white;
+        }
+
+        .retake-btn {
+            background: #e1e7f0;
+            color: #1e3c72;
+        }
+
+        #faceStatus {
+            margin-top: 10px;
+            overflow-wrap: anywhere;
+        }
+
+        .register-btn {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 6px;
+            background: #1e3c72;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+
+        .register-btn:hover {
+            background: #16305c;
+        }
+
+        .login {
+            text-align: center;
+            margin-top: 20px;
+            color: #555;
+        }
+
+        .login a {
+            color: #1e3c72;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back-home {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .back-home a {
+            text-decoration: none;
+            color: #555;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="register-container">
+
+        <h1>Smart Hotel</h1>
+        <p>Create your account</p>
+
+        <form id="registerForm">
+
+            <!-- Full Name -->
+            <div class="input-box">
+                <label for="name">Full Name</label>
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    placeholder="Enter your full name"
+                    required>
+            </div>
+
+            <!-- Email -->
+            <div class="input-box">
+                <label for="email">Email Address</label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    required>
+            </div>
+
+            <!-- Phone -->
+            <div class="input-box">
+                <label for="phone">Phone Number</label>
+                <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    placeholder="Enter your phone number"
+                    required>
+            </div>
+
+            <!-- Username -->
+            <div class="input-box">
+                <label for="username">Username</label>
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    placeholder="Create a username"
+                    required>
+            </div>
+
+            <!-- Password -->
+            <div class="input-box">
+                <label for="password">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Create a password"
+                    minlength="8"
+                    required>
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="input-box">
+                <label for="confirm-password">Confirm Password</label>
+                <input
+                    type="password"
+                    id="confirm-password"
+                    name="confirm-password"
+                    placeholder="Confirm your password"
+                    minlength="8"
+                    required>
+            </div>
+
+            <!-- Face Recognition -->
+            <div class="face-section">
+
+                <h2>Face Recognition</h2>
+
+                <p>
+                    Camera access is optional for this preview.
+                    Please allow camera permission if you wish to capture
+                    your face. The image is not saved to the database yet.
+                </p>
+
+                <video id="camera" autoplay playsinline muted></video>
+
+                <canvas id="captureCanvas" hidden></canvas>
+
+                <img
+                    id="facePreview"
+                    alt="Captured face preview">
+
+                <button
+                    type="button"
+                    class="camera-btn start-btn"
+                    id="startCamera">
+                    Start Camera
+                </button>
+
+                <button
+                    type="button"
+                    class="camera-btn capture-btn"
+                    id="captureFace">
+                    Capture Face
+                </button>
+
+                <button
+                    type="button"
+                    class="camera-btn retake-btn"
+                    id="retakeFace">
+                    Retake
+                </button>
+
+                <p id="faceStatus" role="status" aria-live="polite">
+                    Camera not started.
+                </p>
+
+            </div>
+
+            <!-- Register Button -->
+            <button type="submit" class="register-btn">
+                Create Account
+            </button>
+
+        </form>
+
+        <!-- Login Link -->
+        <div class="login">
+            Already have an account?
+            <a href="login.html">Login</a>
+        </div>
+
+        <!-- Home Link -->
+        <div class="back-home">
+            <a href="index.html">← Back to Home</a>
+        </div>
+
+    </div>
+<script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+    
+<script>
+    const camera = document.getElementById("camera");
+    const canvas = document.getElementById("captureCanvas");
+    const preview = document.getElementById("facePreview");
+    const faceStatus = document.getElementById("faceStatus");
+    const registerForm = document.getElementById("registerForm");
+
+    const MODEL_URL ="https://justadudewhohacks.github.io/face-api.js/models";
+
+    let cameraStream = null;
+    let capturedFace = null;
+    let capturedDescriptor = null;
+    let modelsLoaded = false;
+    let submitting = false;
+
+    // Load face recognition models
+    async function loadFaceModels() {
+        try {
+            faceStatus.textContent =
+                "Loading face recognition models. Please wait...";
+
+            await Promise.all([
+                faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
+                faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
+                faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL)
+            ]);
+
+            modelsLoaded = true;
+
+            faceStatus.textContent =
+                "Face models loaded. Start the camera to continue.";
+
+        } catch (error) {
+            console.error("Model loading error:", error);
+
+            faceStatus.textContent =
+                "Face models could not load. Check your internet connection and reload.";
+        }
+    }
+
+    loadFaceModels();
+
+    // Start camera
+    document.getElementById("startCamera").addEventListener(
+        "click",
+        async function () {
+            try {
+                if (!modelsLoaded) {
+                    faceStatus.textContent =
+                        "Please wait until face models finish loading.";
+                    return;
+                }
+
+                if (!navigator.mediaDevices?.getUserMedia) {
+                    throw new Error("Camera is unavailable in this browser context.");
+                }
+
+                if (cameraStream) {
+                    cameraStream.getTracks().forEach(track => track.stop());
+                }
+
+                cameraStream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: "user" },
+                    audio: false
+                });
+
+                camera.srcObject = cameraStream;
+                await camera.play();
+
+                camera.style.display = "block";
+                preview.style.display = "none";
+
+                capturedFace = null;
+                capturedDescriptor = null;
+
+                faceStatus.textContent =
+                    "Camera ready. Look directly at the camera and capture your face.";
+
+            } catch (error) {
+                console.error("Camera error:", error);
+
+                faceStatus.textContent =
+                    "Camera could not start. Allow camera permission and use localhost or HTTPS.";
+            }
+        }
+    );
+
+    // Capture image and generate a real face descriptor
+    document.getElementById("captureFace").addEventListener(
+        "click",
+        async function () {
+            try {
+                if (!modelsLoaded) {
+                    faceStatus.textContent =
+                        "Face models are still loading.";
+                    return;
+                }
+
+                if (
+                    !cameraStream ||
+                    !camera.videoWidth ||
+                    camera.readyState < 2
+                ) {
+                    faceStatus.textContent =
+                        "Please start the camera first.";
+                    return;
+                }
+
+                faceStatus.textContent =
+                    "Detecting face. Please wait...";
+
+                const detection = await faceapi
+                    .detectSingleFace(
+                        camera,
+                        new faceapi.TinyFaceDetectorOptions()
+                    )
+                    .withFaceLandmarks()
+                    .withFaceDescriptor();
+
+                if (!detection) {
+                    capturedFace = null;
+                    capturedDescriptor = null;
+
+                    faceStatus.textContent =
+                        "No face detected. Improve lighting, face the camera and try again.";
+                    return;
+                }
+
+                canvas.width = camera.videoWidth;
+                canvas.height = camera.videoHeight;
+
+                const context = canvas.getContext("2d");
+
+                context.drawImage(
+                    camera,
+                    0,
+                    0,
+                    canvas.width,
+                    canvas.height
+                );
+
+                capturedFace = canvas.toDataURL("image/jpeg", 0.85);
+
+                // face-api.js generates a 128-number descriptor
+                capturedDescriptor = Array.from(
+                    detection.descriptor
+                );
+
+                preview.src = capturedFace;
+                preview.style.display = "block";
+                camera.style.display = "none";
+
+                faceStatus.textContent =
+                    "Face detected and descriptor generated. You can now create your account.";
+
+            } catch (error) {
+                console.error("Face detection error:", error);
+
+                capturedFace = null;
+                capturedDescriptor = null;
+
+                faceStatus.textContent =
+                    "Face detection failed. Reload the page and try again.";
+            }
+        }
+    );
+
+    // Retake photo
+    document.getElementById("retakeFace").addEventListener(
+        "click",
+        function () {
+            capturedFace = null;
+            capturedDescriptor = null;
+
+            preview.removeAttribute("src");
+            preview.style.display = "none";
+
+            if (cameraStream) {
+                camera.style.display = "block";
+
+                faceStatus.textContent =
+                    "Look at the camera and capture your face again.";
+            } else {
+                faceStatus.textContent =
+                    "Click Start Camera first.";
+            }
+        }
+    );
+
+    // Register account and then save face descriptor
+    registerForm.addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        if (submitting) return;
+
+        const full_name =
+            document.getElementById("name").value.trim();
+
+        const email =
+            document.getElementById("email").value.trim();
+
+        const phone =
+            document.getElementById("phone").value.trim();
+
+        const username =
+            document.getElementById("username").value.trim();
+
+        const password =
+            document.getElementById("password").value;
+
+        const confirmPassword =
+            document.getElementById("confirm-password").value;
+
+        if (password !== confirmPassword) {
+            alert("Password and Confirm Password do not match.");
+            return;
+        }
+
+        if (!modelsLoaded) {
+            alert("Face recognition models are not ready. Please wait.");
+            return;
+        }
+
+        if (!capturedDescriptor || capturedDescriptor.length !== 128) {
+            alert("Please start the camera and capture your face before registering.");
+            return;
+        }
+
+        submitting = true;
+
+        const submitButton =
+            registerForm.querySelector('button[type="submit"]');
+
+        submitButton.disabled = true;
+        submitButton.textContent = "Registering...";
+
+        try {
+            // Step A: Create the user account
+            const registerResponse = await fetch(
+                "http://localhost:5000/api/register",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        full_name,
+                        email,
+                        phone,
+                        username,
+                        password
+                    })
+                }
+            );
+
+            const registerResult = await registerResponse.json();
+
+            if (!registerResponse.ok) {
+                throw new Error(
+                    registerResult.error || "Account registration failed."
+                );
+            }
+
+            // Step B: Save the face descriptor in MySQL
+            const faceResponse = await fetch(
+                "http://localhost:5000/api/face/register",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        email,
+                        descriptor: capturedDescriptor
+                    })
+                }
+            );
+
+            const faceResult = await faceResponse.json();
+
+            if (!faceResponse.ok || !faceResult.success) {
+                alert(
+                    "Your account was created, but face registration failed. " +
+                    (faceResult.message || "Please contact the administrator.")
+                );
+                return;
+            }
+
+            alert(
+                "Account created and face descriptor saved successfully!"
+            );
+
+            if (cameraStream) {
+                cameraStream.getTracks().forEach(track => track.stop());
+                cameraStream = null;
+            }
+
+            window.location.href = "login.html";
+
+        } catch (error) {
+            console.error("Registration error:", error);
+
+            alert(
+                error.message ||
+                "Could not connect to the backend. Check that server.js is running."
+            );
+
+        } finally {
+            submitting = false;
+            submitButton.disabled = false;
+            submitButton.textContent = "Create Account";
+        }
+    });
+
+    // Stop camera when leaving the page
+    window.addEventListener("beforeunload", function () {
+        if (cameraStream) {
+            cameraStream.getTracks().forEach(track => track.stop());
+        }
+    });
+</script>
+
+
+</body>
+</html>

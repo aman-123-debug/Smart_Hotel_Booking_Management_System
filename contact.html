@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Contact Us - Smart Hotel</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fa;
+            color: #222;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        header {
+            min-height: 75px;
+            background: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 12px 7%;
+
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            color: #007bff;
+            white-space: nowrap;
+        }
+
+        nav {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: #007bff;
+        }
+
+        /* ================= LOGIN ================= */
+
+        .login {
+            background: #007bff;
+            color: white;
+            padding: 11px 22px;
+            border-radius: 6px;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .login:hover {
+            background: #0056b3;
+        }
+
+        /* ================= USER PROFILE ================= */
+
+        .user-menu {
+            position: relative;
+            display: none;
+        }
+
+        .user-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 2px solid #007bff;
+            background: #007bff;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-avatar:hover {
+            background: #0056b3;
+        }
+
+        .user-dropdown {
+            display: none;
+
+            position: absolute;
+            top: 52px;
+            right: 0;
+
+            width: 190px;
+
+            background: white;
+
+            border-radius: 8px;
+
+            box-shadow:
+                0 6px 20px rgba(0,0,0,0.18);
+
+            overflow: hidden;
+
+            z-index: 2000;
+        }
+
+        .user-dropdown.show {
+            display: block;
+        }
+
+        .user-name {
+            padding: 14px 15px;
+            color: #1d3557;
+            font-weight: bold;
+            border-bottom: 1px solid #eee;
+        }
+
+        .user-dropdown a,
+        .user-dropdown button {
+            display: block;
+            width: 100%;
+
+            padding: 12px 15px;
+
+            border: none;
+            background: white;
+
+            color: #333;
+
+            text-align: left;
+            text-decoration: none;
+
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .user-dropdown a:hover,
+        .user-dropdown button:hover {
+            background: #f5f7fa;
+            color: #007bff;
+        }
+
+        /* ================= PAGE BANNER ================= */
+
+        .page-banner {
+            height: 300px;
+
+            background:
+                linear-gradient(
+                    rgba(0,0,0,0.6),
+                    rgba(0,0,0,0.6)
+                ),
+                linear-gradient(
+                    120deg,
+                    #1d3557,
+                    #457b9d
+                );
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            text-align: center;
+
+            color: white;
+        }
+
+        .page-banner h1 {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .page-banner p {
+            font-size: 18px;
+        }
+
+        /* ================= CONTACT SECTION ================= */
+
+        .contact-section {
+            width: 85%;
+            margin: auto;
+
+            padding: 70px 0;
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1.5fr;
+
+            gap: 40px;
+        }
+
+        /* ================= CONTACT INFO ================= */
+
+        .contact-info {
+            background: #007bff;
+            color: white;
+
+            padding: 40px;
+
+            border-radius: 12px;
+        }
+
+        .contact-info h2 {
+            font-size: 30px;
+            margin-bottom: 15px;
+        }
+
+        .contact-info > p {
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+
+        .info-box {
+            display: flex;
+            align-items: flex-start;
+
+            gap: 15px;
+
+            margin-bottom: 25px;
+        }
+
+        .info-icon {
+            font-size: 25px;
+            width: 35px;
+        }
+
+        .info-box h3 {
+            margin-bottom: 5px;
+        }
+
+        .info-box p {
+            color: #e8f2ff;
+            line-height: 1.5;
+        }
+
+        /* ================= CONTACT FORM ================= */
+
+        .contact-form {
+            background: white;
+
+            padding: 40px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 5px 20px rgba(0,0,0,0.10);
+        }
+
+        .contact-form h2 {
+            font-size: 30px;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+
+            font-weight: bold;
+
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+
+            width: 100%;
+
+            padding: 13px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 6px;
+
+            font-size: 15px;
+
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: #007bff;
+        }
+
+        .form-group textarea {
+            height: 130px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            width: 100%;
+
+            padding: 14px;
+
+            background: #007bff;
+
+            border: none;
+
+            color: white;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            border-radius: 6px;
+
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background: #0056b3;
+        }
+
+        /* ================= MAP / LOCATION ================= */
+
+        .location {
+            background: white;
+
+            padding: 70px 7%;
+
+            text-align: center;
+        }
+
+        .location h2 {
+            font-size: 35px;
+            margin-bottom: 15px;
+        }
+
+        .location > p {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .map-box {
+            height: 300px;
+
+            max-width: 1100px;
+
+            margin: auto;
+
+            background: #dce8f5;
+
+            border-radius: 12px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 70px;
+        }
+
+        .map-text {
+            font-size: 18px;
+            margin-top: 15px;
+            color: #555;
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            background: #17202a;
+            color: white;
+
+            padding-top: 50px;
+        }
+
+        .footer-container {
+            width: 85%;
+            margin: auto;
+
+            display: grid;
+
+            grid-template-columns:
+                2fr 1fr 1fr;
+
+            gap: 50px;
+
+            padding-bottom: 40px;
+        }
+
+        .footer-container h3 {
+            margin-bottom: 15px;
+        }
+
+        .footer-container p {
+            color: #ccc;
+            line-height: 1.7;
+        }
+
+        .footer-container a {
+            display: block;
+
+            color: #ccc;
+
+            text-decoration: none;
+
+            margin-bottom: 10px;
+        }
+
+        .footer-container a:hover {
+            color: white;
+        }
+
+        .copyright {
+            border-top: 1px solid #333;
+
+            text-align: center;
+
+            padding: 20px;
+
+            color: #bbb;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media(max-width: 900px) {
+
+            header {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .contact-section {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-container {
+                grid-template-columns: 1fr 1fr;
+            }
+
+        }
+
+        @media(max-width: 600px) {
+
+            header {
+                height: auto;
+
+                padding: 15px;
+
+                gap: 15px;
+            }
+
+            nav {
+                order: 3;
+
+                width: 100%;
+
+                justify-content: center;
+
+                flex-wrap: wrap;
+            }
+
+            .page-banner h1 {
+                font-size: 35px;
+            }
+
+            .contact-section {
+                width: 92%;
+            }
+
+            .contact-info,
+            .contact-form {
+                padding: 25px;
+            }
+
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+
+            .user-dropdown {
+                right: auto;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <header>
+
+        <div class="logo">
+            🏨 Smart Hotel
+        </div>
+
+        <nav>
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="rooms.html">
+                Rooms
+            </a>
+
+            <a href="booking.html">
+                Booking
+            </a>
+
+            <a href="service.html">
+                Services
+            </a>
+
+            <a href="about.html">
+                About
+            </a>
+
+            <a href="contact.html" class="active">
+                Contact
+            </a>
+
+        </nav>
+
+        <!-- LOGIN -->
+
+        <a
+            href="login.html"
+            class="login"
+            id="loginLink">
+            Login
+        </a>
+
+        <!-- USER PROFILE -->
+
+        <div
+            class="user-menu"
+            id="userMenu">
+
+            <button
+                type="button"
+                class="user-avatar"
+                id="userAvatar">
+                U
+            </button>
+
+            <div
+                class="user-dropdown"
+                id="userDropdown">
+
+                <div
+                    class="user-name"
+                    id="userName">
+                    User
+                </div>
+
+                <a href="my_booking.html">
+                    My Booking
+                </a>
+
+                <button
+                    type="button"
+                    id="logoutBtn">
+                    Logout
+                </button>
+
+            </div>
+
+        </div>
+
+    </header>
+
+    <!-- ================= PAGE BANNER ================= -->
+
+    <section class="page-banner">
+
+        <div>
+
+            <h1>
+                Contact Us
+            </h1>
+
+            <p>
+                We are here to help you
+            </p>
+
+        </div>
+
+    </section>
+
+    <!-- ================= CONTACT ================= -->
+
+    <section class="contact-section">
+
+        <!-- CONTACT INFORMATION -->
+
+        <div class="contact-info">
+
+            <h2>
+                Get In Touch
+            </h2>
+
+            <p>
+                Have any questions about our rooms,
+                booking or services? Feel free to
+                contact us.
+            </p>
+
+            <div class="info-box">
+
+                <div class="info-icon">
+                    📍
+                </div>
+
+                <div>
+
+                    <h3>
+                        Address
+                    </h3>
+
+                    <p>
+                        Smart Hotel, Asansol,
+                        West Bengal, India
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="info-box">
+
+                <div class="info-icon">
+                    📞
+                </div>
+
+                <div>
+
+                    <h3>
+                        Phone
+                    </h3>
+
+                    <p>
+                        +91 1800-123-4567
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="info-box">
+
+                <div class="info-icon">
+                    ✉️
+                </div>
+
+                <div>
+
+                    <h3>
+                        Email
+                    </h3>
+
+                    <p>
+                        smarthotel@gmail.com
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="info-box">
+
+                <div class="info-icon">
+                    🕐
+                </div>
+
+                <div>
+
+                    <h3>
+                        Working Hours
+                    </h3>
+
+                    <p>
+                        Monday - Sunday
+                        <br>
+                        24 Hours
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- CONTACT FORM -->
+
+        <div class="contact-form">
+
+            <h2>
+                Send Us a Message
+            </h2>
+
+            <form onsubmit="sendMessage(event)">
+
+                <div class="form-group">
+
+                    <label>
+                        Full Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        placeholder="Enter your name"
+                        required>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+                        Email Address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="Enter your email"
+                        required>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+                        Phone Number
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="phone"
+                        placeholder="Enter your phone number"
+                        required>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+                        Subject
+                    </label>
+
+                    <select id="subject">
+
+                        <option>
+                            Room Booking
+                        </option>
+
+                        <option>
+                            Payment
+                        </option>
+
+                        <option>
+                            Room Information
+                        </option>
+
+                        <option>
+                            General Inquiry
+                        </option>
+
+                        <option>
+                            Other
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+                        Message
+                    </label>
+
+                    <textarea
+                        id="message"
+                        placeholder="Write your message here..."
+                        required></textarea>
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="submit-btn">
+
+                    Send Message
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </section>
+
+    <!-- ================= LOCATION ================= -->
+
+    <section class="location">
+
+        <h2>
+            Our Location
+        </h2>
+
+        <p>
+            Visit us and experience Smart Hotel.
+        </p>
+
+        <div class="map-box">
+            📍
+        </div>
+
+        <p class="map-text">
+            Smart Hotel, Asansol, West Bengal, India
+        </p>
+
+    </section>
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <div class="footer-container">
+
+            <div>
+
+                <h3>
+                    🏨 Smart Hotel
+                </h3>
+
+                <p>
+                    Smart Hotel Booking Management
+                    System for easy and secure hotel
+                    reservations.
+                </p>
+
+            </div>
+
+            <div>
+
+                <h3>
+                    Quick Links
+                </h3>
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="rooms.html">
+                    Rooms
+                </a>
+
+                <a href="booking.html">
+                    Booking
+                </a>
+
+                <a href="service.html">
+                    Services
+                </a>
+
+                <a href="about.html">
+                    About
+                </a>
+
+                <a href="my_booking.html">
+                    My Booking
+                </a>
+
+            </div>
+
+            <div>
+
+                <h3>
+                    Contact
+                </h3>
+
+                <p>
+                    Email: smarthotel@gmail.com
+                </p>
+
+                <p>
+                    Phone: +91 1800-123-4567
+                </p>
+
+                <p>
+                    Asansol, West Bengal
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="copyright">
+
+            © 2026 Smart Hotel. All Rights Reserved.
+
+        </div>
+
+    </footer>
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script>
+
+        /* ================= CONTACT FORM ================= */
+
+        function sendMessage(event) {
+
+            event.preventDefault();
+
+            const name =
+                document.getElementById(
+                    "name"
+                ).value;
+
+            alert(
+                "Thank you " +
+                name +
+                "! Your message has been sent successfully."
+            );
+
+            document.querySelector(
+                ".contact-form form"
+            ).reset();
+
+        }
+
+
+        /* ================= USER PROFILE ================= */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function() {
+
+                const currentUserJSON =
+                    localStorage.getItem(
+                        "currentUser"
+                    );
+
+                const loginLink =
+                    document.getElementById(
+                        "loginLink"
+                    );
+
+                const userMenu =
+                    document.getElementById(
+                        "userMenu"
+                    );
+
+                const userAvatar =
+                    document.getElementById(
+                        "userAvatar"
+                    );
+
+                const userName =
+                    document.getElementById(
+                        "userName"
+                    );
+
+                const userDropdown =
+                    document.getElementById(
+                        "userDropdown"
+                    );
+
+                const logoutBtn =
+                    document.getElementById(
+                        "logoutBtn"
+                    );
+
+
+                /* NOT LOGGED IN */
+
+                if (!currentUserJSON) {
+
+                    loginLink.style.display =
+                        "inline-block";
+
+                    userMenu.style.display =
+                        "none";
+
+                    return;
+                }
+
+
+                let currentUser;
+
+                try {
+
+                    currentUser =
+                        JSON.parse(
+                            currentUserJSON
+                        );
+
+                } catch (error) {
+
+                    localStorage.removeItem(
+                        "currentUser"
+                    );
+
+                    loginLink.style.display =
+                        "inline-block";
+
+                    userMenu.style.display =
+                        "none";
+
+                    return;
+                }
+
+
+                /* LOGGED IN */
+
+                loginLink.style.display =
+                    "none";
+
+                userMenu.style.display =
+                    "block";
+
+
+                const fullName =
+                    currentUser.full_name ||
+                    currentUser.username ||
+                    "User";
+
+
+                userName.textContent =
+                    fullName;
+
+
+                /* INITIALS */
+
+                const nameParts =
+                    fullName
+                        .trim()
+                        .split(/\s+/);
+
+
+                let initials = "";
+
+
+                if (nameParts.length >= 2) {
+
+                    initials =
+                        nameParts[0].charAt(0) +
+                        nameParts[1].charAt(0);
+
+                } else {
+
+                    initials =
+                        fullName.substring(
+                            0,
+                            2
+                        );
+
+                }
+
+
+                userAvatar.textContent =
+                    initials.toUpperCase();
+
+
+                /* OPEN DROPDOWN */
+
+                userAvatar.addEventListener(
+                    "click",
+                    function(event) {
+
+                        event.stopPropagation();
+
+                        userDropdown.classList.toggle(
+                            "show"
+                        );
+
+                    }
+                );
+
+
+                /* CLOSE DROPDOWN */
+
+                document.addEventListener(
+                    "click",
+                    function(event) {
+
+                        if (
+                            !userMenu.contains(
+                                event.target
+                            )
+                        ) {
+
+                            userDropdown.classList.remove(
+                                "show"
+                            );
+
+                        }
+
+                    }
+                );
+
+
+                /* LOGOUT */
+
+                logoutBtn.addEventListener(
+                    "click",
+                    function() {
+
+                        localStorage.removeItem(
+                            "currentUser"
+                        );
+
+                        window.location.href =
+                            "login.html";
+
+                    }
+                );
+
+            }
+        );
+
+    </script>
+
+</body>
+</html>

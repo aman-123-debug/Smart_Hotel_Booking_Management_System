@@ -1,0 +1,1563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Hotel Rooms</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            background: #1e3a5f;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: white;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 28px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .nav-links a:hover {
+            color: #ffd166;
+        }
+
+        /* ================= USER PROFILE ================= */
+
+        .user-menu {
+            position: relative;
+            display: none;
+        }
+
+        .user-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 2px solid white;
+            background: #ffd166;
+            color: #1e3a5f;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-avatar:hover {
+            background: white;
+        }
+
+        .user-dropdown {
+            display: none;
+            position: absolute;
+            top: 52px;
+            right: 0;
+            width: 190px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.18);
+            overflow: hidden;
+            z-index: 2000;
+        }
+
+        .user-dropdown.show {
+            display: block;
+        }
+
+        .user-name {
+            padding: 14px 15px;
+            color: #1e3a5f;
+            font-weight: bold;
+            border-bottom: 1px solid #eee;
+        }
+
+        .user-dropdown a,
+        .user-dropdown button {
+            display: block;
+            width: 100%;
+            padding: 12px 15px;
+            border: none;
+            background: white;
+            color: #333;
+            text-align: left;
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .user-dropdown a:hover,
+        .user-dropdown button:hover {
+            background: #f5f7fa;
+            color: #1e3a5f;
+        }
+
+        /* ================= PAGE HEADER ================= */
+
+        .page-header {
+            background:
+                linear-gradient(
+                    rgba(0,0,0,0.55),
+                    rgba(0,0,0,0.55)
+                ),
+                url("https://images.unsplash.com/photo-1540541338287-41700207dee6?auto=format&fit=crop&w=1600&q=80");
+
+            background-size: cover;
+            background-position: center;
+
+            height: 300px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            text-align: center;
+            color: white;
+        }
+
+        .page-header h1 {
+            font-size: 45px;
+            margin-bottom: 10px;
+        }
+
+        .page-header p {
+            font-size: 18px;
+        }
+
+        /* ================= CONTAINER ================= */
+
+        .container {
+            width: 90%;
+            max-width: 1150px;
+            margin: 50px auto;
+        }
+
+        /* ================= TITLE ================= */
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .section-title h2 {
+            color: #1e3a5f;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .section-title p {
+            color: #777;
+        }
+
+        /* ================= FILTER ================= */
+
+        .filter-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom: 35px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .filter-box select {
+            padding: 11px 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            min-width: 180px;
+            font-size: 14px;
+        }
+
+        /* ================= ROOM GRID ================= */
+
+        .rooms {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        /* ================= ROOM CARD ================= */
+
+        .room-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: 0.3s;
+        }
+
+        .room-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 22px rgba(0,0,0,0.14);
+        }
+
+        /* ================= ROOM IMAGE ================= */
+
+        .room-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+
+        /* ================= ROOM CONTENT ================= */
+
+        .room-content {
+            padding: 22px;
+        }
+
+        .room-content h3 {
+            color: #1e3a5f;
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .room-description {
+            color: #777;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        /* ================= FACILITIES ================= */
+
+        .facilities {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+
+        .facility {
+            background: #eef3f8;
+            color: #1e3a5f;
+            padding: 6px 9px;
+            border-radius: 5px;
+            font-size: 12px;
+        }
+
+        /* ================= ROOM INFO ================= */
+
+        .room-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .price {
+            color: #1e3a5f;
+            font-size: 21px;
+            font-weight: bold;
+        }
+
+        .price span {
+            color: #777;
+            font-size: 12px;
+            font-weight: normal;
+        }
+
+        .guests {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* ================= ROOM AVAILABILITY ================= */
+
+        .availability-box {
+            background: #e8f7ed;
+            color: #198754;
+            padding: 10px 12px;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 15px;
+        }
+
+        .availability-box span {
+            font-size: 23px;
+        }
+
+        /* ================= BOOK BUTTON ================= */
+
+        .book-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            text-align: center;
+            background: #1e3a5f;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .book-btn:hover {
+            background: #162d49;
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            background: #1e3a5f;
+            color: white;
+            text-align: center;
+            padding: 25px;
+            margin-top: 60px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 900px) {
+
+            .rooms {
+                grid-template-columns: 1fr 1fr;
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .page-header h1 {
+                font-size: 35px;
+            }
+
+            .rooms {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-box {
+                flex-direction: column;
+            }
+
+            .filter-box select {
+                width: 100%;
+            }
+
+            .user-dropdown {
+                right: auto;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            SMART HOTEL BOOKING
+        </div>
+
+        <div class="nav-links">
+
+            <a href="home.html">Home</a>
+
+            <a href="rooms.html">Rooms</a>
+
+            <a href="booking.html">Booking</a>
+
+            
+
+            <a href="about.html">About</a>
+
+            <a href="contact.html">Contact</a>
+
+            <a href="login.html" id="loginLink">
+                Login
+            </a>
+
+            <!-- USER PROFILE -->
+
+            <div
+                class="user-menu"
+                id="userMenu">
+
+                <button
+                    type="button"
+                    class="user-avatar"
+                    id="userAvatar">
+                    U
+                </button>
+
+                <div
+                    class="user-dropdown"
+                    id="userDropdown">
+
+                    <div
+                        class="user-name"
+                        id="userName">
+                        User
+                    </div>
+
+                    <a href="my_booking.html">
+                        My Booking
+                    </a>
+                    <a href="Booking_History.html">
+                        Booking History
+                    </a>
+
+                    <button
+                        type="button"
+                        id="logoutBtn">
+                        Logout
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+    <!-- ================= PAGE HEADER ================= -->
+
+    <section class="page-header">
+
+        <div>
+
+            <h1>
+                Our Rooms
+            </h1>
+
+            <p>
+                Choose the perfect room for your stay
+            </p>
+
+        </div>
+
+    </section>
+
+    <!-- ================= MAIN ================= -->
+
+    <div class="container">
+
+        <div class="section-title">
+
+            <h2>
+                Choose Your Room
+            </h2>
+
+            <p>
+                Comfortable rooms with modern facilities
+            </p>
+
+        </div>
+
+        <!-- ================= FILTER ================= -->
+
+        <div class="filter-box">
+
+            <select
+                id="roomFilter"
+                onchange="applyFilters()">
+
+                <option value="all">
+                    All Room Types
+                </option>
+
+                <option value="deluxe">
+                    Deluxe Room
+                </option>
+
+                <option value="luxury">
+                    Luxury Room
+                </option>
+
+                <option value="family">
+                    Family Room
+                </option>
+
+                <option value="premium">
+                    Premium Room
+                </option>
+
+                <option value="suite">
+                    Executive Suite Room
+                </option>
+
+                <option value="standard">
+                    Standard Room
+                </option>
+
+            </select>
+
+            <select
+                id="priceFilter"
+                onchange="applyFilters()">
+
+                <option value="low">
+                    Price - Low to High
+                </option>
+
+                <option value="high">
+                    Price - High to Low
+                </option>
+
+            </select>
+
+            <select
+                id="guestFilter"
+                onchange="applyFilters()">
+
+                <option value="1">
+                    1 Guest
+                </option>
+
+                <option value="2">
+                    2 Guests
+                </option>
+
+                <option value="3">
+                    3 Guests
+                </option>
+
+                <option value="4">
+                    4 Guests
+                </option>
+
+                <option value="5">
+                    5 Guests
+                </option>
+
+            </select>
+
+        </div>
+
+        <!-- ================= ROOMS ================= -->
+
+        <div
+            class="rooms"
+            id="rooms">
+
+            <!-- DELUXE -->
+
+            <div
+                class="room-card"
+                data-type="deluxe"
+                data-price="4000"
+                data-guests="4">
+
+                <img
+                    src="https://images.unsplash.com/photo-1566665797739-1674de7a421a"
+                    alt="Deluxe Room"
+                    class="room-image">
+
+                <div class="room-content">
+
+                    <h3>
+                        Deluxe Room
+                    </h3>
+
+                    <p class="room-description">
+                        A comfortable and elegant room
+                        designed for a relaxing stay with
+                        modern facilities.
+                    </p>
+
+                    <div class="facilities">
+
+                        <span class="facility">
+                            🛏 King Bed
+                        </span>
+
+                        <span class="facility">
+                            📶 Free Wi-Fi
+                        </span>
+
+                        <span class="facility">
+                            ❄ AC
+                        </span>
+
+                        <span class="facility">
+                            📺 TV
+                        </span>
+
+                    </div>
+
+                    <div class="availability-box">
+                        <span>10</span> Rooms Available
+                    </div>
+
+                    <div class="room-info">
+
+                        <div class="price">
+                            ₹4,000
+                            <span>/ Night</span>
+                        </div>
+
+                        <div class="guests">
+                            👤 4 Guests
+                        </div>
+
+                    </div>
+
+                    <a
+                        href="booking.html?room=deluxe"
+                        class="book-btn">
+                        Book Now
+                    </a>
+
+                </div>
+            </div>
+
+            <!-- LUXURY -->
+
+            <div
+                class="room-card"
+                data-type="luxury"
+                data-price="6000"
+                data-guests="5">
+
+                <img
+                    src="https://sonno.co.uk/cdn/shop/articles/Luxury_Bedroom_Ideas_on_Budget_592e894b-3892-4fa7-a4b2-dfef47c65a58.jpg?v=1769600094"
+                    alt="Luxury Room"
+                    class="room-image">
+
+                <div class="room-content">
+
+                    <h3>
+                        Luxury Room
+                    </h3>
+
+                    <p class="room-description">
+                        Premium room with elegant
+                        interiors, spacious design and
+                        luxury facilities.
+                    </p>
+
+                    <div class="facilities">
+
+                        <span class="facility">
+                            🛏 King Bed
+                        </span>
+
+                        <span class="facility">
+                            📶 Free Wi-Fi
+                        </span>
+
+                        <span class="facility">
+                            ❄ AC
+                        </span>
+
+                        <span class="facility">
+                            🛁 Bathtub
+                        </span>
+
+                    </div>
+
+                    <div class="availability-box">
+                        <span>10</span> Rooms Available
+                    </div>
+
+                    <div class="room-info">
+
+                        <div class="price">
+                            ₹6,000
+                            <span>/ Night</span>
+                        </div>
+
+                        <div class="guests">
+                            👤 5 Guests
+                        </div>
+
+                    </div>
+
+                    <a
+                        href="booking.html?room=luxury"
+                        class="book-btn">
+                        Book Now
+                    </a>
+
+                </div>
+            </div>
+
+            <!-- FAMILY -->
+
+            <div
+                class="room-card"
+                data-type="family"
+                data-price="4000"
+                data-guests="4">
+
+                <img
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTO5VUGOFHzhTJDv-KqdGfp0EVS9tkqD4NQZJZwyFe0zQ&s"
+                    alt="Family Room"
+                    class="room-image">
+
+                <div class="room-content">
+
+                    <h3>
+                        Family Room
+                    </h3>
+
+                    <p class="room-description">
+                        Spacious room specially designed
+                        for families with comfortable beds
+                        and modern amenities.
+                    </p>
+
+                    <div class="facilities">
+
+                        <span class="facility">
+                            🛏 2 Beds
+                        </span>
+
+                        <span class="facility">
+                            📶 Free Wi-Fi
+                        </span>
+
+                        <span class="facility">
+                            ❄ AC
+                        </span>
+
+                        <span class="facility">
+                            📺 TV
+                        </span>
+
+                    </div>
+
+                    <div class="availability-box">
+                        <span>10</span> Rooms Available
+                    </div>
+
+                    <div class="room-info">
+
+                        <div class="price">
+                            ₹4,000
+                            <span>/ Night</span>
+                        </div>
+
+                        <div class="guests">
+                            👤 4 Guests
+                        </div>
+
+                    </div>
+
+                    <a
+                        href="booking.html?room=family"
+                        class="book-btn">
+                        Book Now
+                    </a>
+
+                </div>
+            </div>
+
+            <!-- STANDARD -->
+
+            <div
+                class="room-card"
+                data-type="standard"
+                data-price="3000"
+                data-guests="2">
+
+                <img
+                    src="https://bookings.vythirivillage.com/storage/tenants/1/rooms/3HivwpAdI1fEdgZpxJYLSpSvVDjRJdQ4yuaBuRCM.jpg"
+                    alt="Standard Room"
+                    class="room-image">
+
+                <div class="room-content">
+
+                    <h3>
+                        Standard Room
+                    </h3>
+
+                    <p class="room-description">
+                        Affordable and comfortable room
+                        suitable for short and business
+                        stays.
+                    </p>
+
+                    <div class="facilities">
+
+                        <span class="facility">
+                            🛏 Double Bed
+                        </span>
+
+                        <span class="facility">
+                            📶 Free Wi-Fi
+                        </span>
+
+                        <span class="facility">
+                            ❄ AC
+                        </span>
+
+                        <span class="facility">
+                            📺 TV
+                        </span>
+
+                    </div>
+
+                    <div class="availability-box">
+                        <span>10</span> Rooms Available
+                    </div>
+
+                    <div class="room-info">
+
+                        <div class="price">
+                            ₹3,000
+                            <span>/ Night</span>
+                        </div>
+
+                        <div class="guests">
+                            👤 2 Guests
+                        </div>
+
+                    </div>
+
+                    <a
+                        href="booking.html?room=standard"
+                        class="book-btn">
+                        Book Now
+                    </a>
+
+                </div>
+            </div>
+
+            <!-- SUITE -->
+
+            <div
+                class="room-card"
+                data-type="suite"
+                data-price="7000"
+                data-guests="3">
+
+                <img
+                    src="https://images.unsplash.com/photo-1590490360182-c33d57733427"
+                    alt="Suite Room"
+                    class="room-image">
+
+                <div class="room-content">
+
+                    <h3>
+                        Executive Suite Room
+                    </h3>
+
+                    <p class="room-description">
+                        Spacious executive suite with
+                        separate living area and premium
+                        hotel services.
+                    </p>
+
+                    <div class="facilities">
+
+                        <span class="facility">
+                            🛏 King Bed
+                        </span>
+
+                        <span class="facility">
+                            📶 Free Wi-Fi
+                        </span>
+
+                        <span class="facility">
+                            ❄ AC
+                        </span>
+
+                        <span class="facility">
+                            🛋 Living Area
+                        </span>
+
+                    </div>
+
+                    <div class="availability-box">
+                        <span>10</span> Rooms Available
+                    </div>
+
+                    <div class="room-info">
+
+                        <div class="price">
+                            ₹7,000
+                            <span>/ Night</span>
+                        </div>
+
+                        <div class="guests">
+                            👤 3 Guests
+                        </div>
+
+                    </div>
+
+                    <a
+                        href="booking.html?room=suite"
+                        class="book-btn">
+                        Book Now
+                    </a>
+
+                </div>
+            </div>
+
+            <!-- PREMIUM -->
+
+            <div
+                class="room-card"
+                data-type="premium"
+                data-price="6000"
+                data-guests="3">
+
+                <img
+                    src="http://thelalit.com/wp-content/uploads/2024/10/PremierRoom-A.jpg"
+                    alt="Premium Room"
+                    class="room-image">
+
+                <div class="room-content">
+
+                    <h3>
+                        Premium Room
+                    </h3>
+
+                    <p class="room-description">
+                        Modern premium room offering
+                        comfort, stylish interiors and
+                        premium amenities.
+                    </p>
+
+                    <div class="facilities">
+
+                        <span class="facility">
+                            🛏 King Bed
+                        </span>
+
+                        <span class="facility">
+                            📶 Free Wi-Fi
+                        </span>
+
+                        <span class="facility">
+                            ❄ AC
+                        </span>
+
+                        <span class="facility">
+                            🍽 Room Service
+                        </span>
+
+                    </div>
+
+                    <div class="availability-box">
+                        <span>10</span> Rooms Available
+                    </div>
+
+                    <div class="room-info">
+
+                        <div class="price">
+                            ₹6,000
+                            <span>/ Night</span>
+                        </div>
+
+                        <div class="guests">
+                            👤 3 Guests
+                        </div>
+
+                    </div>
+
+                    <a
+                        href="booking.html?room=premium"
+                        class="book-btn">
+                        Book Now
+                    </a>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+        © 2026 Smart Hotel Booking Management System
+    </footer>
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script>
+
+        let databaseRooms = [];
+
+
+        /* ================= LOAD ROOMS FROM BACKEND ================= */
+
+        async function loadRoomsFromBackend() {
+
+            try {
+
+                const response =
+                    await fetch(
+                        "http://localhost:5000/api/rooms"
+                    );
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Backend response error: " +
+                        response.status
+                    );
+
+                }
+
+                databaseRooms =
+                    await response.json();
+
+                console.log(
+                    "ROOM DATA FROM BACKEND:",
+                    databaseRooms
+                );
+
+                updateRoomCards();
+
+            } catch (error) {
+
+                console.error(
+                    "BACKEND ERROR:",
+                    error
+                );
+
+                alert(
+                    "The backend is not returning any data. Please check."
+                );
+
+            }
+        }
+
+
+        /* ================= UPDATE ROOM CARDS ================= */
+
+        function updateRoomCards() {
+
+            const cards =
+                document.querySelectorAll(
+                    ".room-card"
+                );
+
+
+            cards.forEach(
+                function(card) {
+
+                    const frontendType =
+                        card.getAttribute(
+                            "data-type"
+                        );
+
+
+                    const typeMap = {
+
+                        standard:
+                            "Standard Room",
+
+                        deluxe:
+                            "Deluxe Room",
+
+                        family:
+                            "Family Room",
+
+                        luxury:
+                            "Luxury Room",
+
+                        premium:
+                            "Premium Room",
+
+                        suite:
+                            "Executive Suite Room"
+
+                    };
+
+
+                    const databaseType =
+                        typeMap[frontendType];
+
+
+                    const room =
+                        databaseRooms.find(
+                            function(item) {
+
+                                return (
+                                    item.room_type ===
+                                    databaseType
+                                );
+
+                            }
+                        );
+
+
+                    if (!room) {
+
+                        console.log(
+                            "Room not found:",
+                            databaseType
+                        );
+
+                        return;
+
+                    }
+
+
+                    /* PRICE */
+
+                    card.setAttribute(
+                        "data-price",
+                        Number(room.price)
+                    );
+
+
+                    const priceElement =
+                        card.querySelector(
+                            ".price"
+                        );
+
+
+                    if (priceElement) {
+
+                        priceElement.innerHTML =
+                            `₹${Number(room.price).toLocaleString("en-IN")}
+                            <span>/ Night</span>`;
+
+                    }
+
+
+                    /* GUEST CAPACITY */
+
+                    card.setAttribute(
+                        "data-guests",
+                        Number(room.capacity)
+                    );
+
+
+                    const guestElement =
+                        card.querySelector(
+                            ".guests"
+                        );
+
+
+                    if (guestElement) {
+
+                        guestElement.innerHTML =
+                            `👤 ${room.capacity} Guests`;
+
+                    }
+
+
+                    /* AVAILABILITY */
+
+                    const availableRooms =
+                        databaseRooms.filter(
+                            function(item) {
+
+                                return (
+                                    item.room_type ===
+                                    databaseType &&
+                                    item.status ===
+                                    "available"
+                                );
+
+                            }
+                        ).length;
+
+
+                    const availabilityElement =
+                        card.querySelector(
+                            ".availability-box span"
+                        );
+
+
+                    if (availabilityElement) {
+
+                        availabilityElement.textContent =
+                            availableRooms;
+
+                    }
+
+                }
+            );
+
+
+            applyFilters();
+
+        }
+
+
+        /* ================= FILTER ================= */
+
+        function applyFilters() {
+
+            const roomType =
+                document.getElementById(
+                    "roomFilter"
+                ).value;
+
+
+            const priceOrder =
+                document.getElementById(
+                    "priceFilter"
+                ).value;
+
+
+            const selectedGuests =
+                parseInt(
+                    document.getElementById(
+                        "guestFilter"
+                    ).value
+                );
+
+
+            const container =
+                document.getElementById(
+                    "rooms"
+                );
+
+
+            const cards =
+                Array.from(
+                    container.querySelectorAll(
+                        ".room-card"
+                    )
+                );
+
+
+            cards.forEach(
+                function(card) {
+
+                    const type =
+                        card.getAttribute(
+                            "data-type"
+                        );
+
+
+                    const guests =
+                        parseInt(
+                            card.getAttribute(
+                                "data-guests"
+                            )
+                        );
+
+
+                    const typeMatch =
+                        roomType === "all" ||
+                        type === roomType;
+
+
+                    const guestMatch =
+                        guests >= selectedGuests;
+
+
+                    card.style.display =
+                        typeMatch &&
+                        guestMatch
+                            ? "block"
+                            : "none";
+
+                }
+            );
+
+
+            cards.sort(
+                function(a, b) {
+
+                    const priceA =
+                        parseInt(
+                            a.getAttribute(
+                                "data-price"
+                            )
+                        );
+
+
+                    const priceB =
+                        parseInt(
+                            b.getAttribute(
+                                "data-price"
+                            )
+                        );
+
+
+                    return priceOrder === "low"
+                        ? priceA - priceB
+                        : priceB - priceA;
+
+                }
+            );
+
+
+            cards.forEach(
+                function(card) {
+
+                    container.appendChild(
+                        card
+                    );
+
+                }
+            );
+
+        }
+
+
+        /* ================= USER PROFILE ================= */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function() {
+
+                const currentUserJSON =
+                    localStorage.getItem(
+                        "currentUser"
+                    );
+
+
+                const loginLink =
+                    document.getElementById(
+                        "loginLink"
+                    );
+
+
+                const userMenu =
+                    document.getElementById(
+                        "userMenu"
+                    );
+
+
+                const userAvatar =
+                    document.getElementById(
+                        "userAvatar"
+                    );
+
+
+                const userName =
+                    document.getElementById(
+                        "userName"
+                    );
+
+
+                const userDropdown =
+                    document.getElementById(
+                        "userDropdown"
+                    );
+
+
+                const logoutBtn =
+                    document.getElementById(
+                        "logoutBtn"
+                    );
+
+
+                /* NOT LOGGED IN */
+
+                if (!currentUserJSON) {
+
+                    loginLink.style.display =
+                        "inline";
+
+                    userMenu.style.display =
+                        "none";
+
+                    return;
+
+                }
+
+
+                let currentUser;
+
+
+                try {
+
+                    currentUser =
+                        JSON.parse(
+                            currentUserJSON
+                        );
+
+                } catch (error) {
+
+                    localStorage.removeItem(
+                        "currentUser"
+                    );
+
+                    loginLink.style.display =
+                        "inline";
+
+                    userMenu.style.display =
+                        "none";
+
+                    return;
+
+                }
+
+
+                /* Hide Login */
+
+                loginLink.style.display =
+                    "none";
+
+
+                /* Show profile */
+
+                userMenu.style.display =
+                    "block";
+
+
+                const fullName =
+                    currentUser.full_name ||
+                    currentUser.username ||
+                    "User";
+
+
+                userName.textContent =
+                    fullName;
+
+
+                /* Initials */
+
+                const nameParts =
+                    fullName
+                        .trim()
+                        .split(/\s+/);
+
+
+                let initials = "";
+
+
+                if (nameParts.length >= 2) {
+
+                    initials =
+                        nameParts[0].charAt(0) +
+                        nameParts[1].charAt(0);
+
+                } else {
+
+                    initials =
+                        fullName.substring(
+                            0,
+                            2
+                        );
+
+                }
+
+
+                userAvatar.textContent =
+                    initials.toUpperCase();
+
+
+                /* Open dropdown */
+
+                userAvatar.addEventListener(
+                    "click",
+                    function(event) {
+
+                        event.stopPropagation();
+
+                        userDropdown.classList.toggle(
+                            "show"
+                        );
+
+                    }
+                );
+
+
+                /* Close dropdown */
+
+                document.addEventListener(
+                    "click",
+                    function(event) {
+
+                        if (
+                            !userMenu.contains(
+                                event.target
+                            )
+                        ) {
+
+                            userDropdown.classList.remove(
+                                "show"
+                            );
+
+                        }
+
+                    }
+                );
+
+
+                /* Logout */
+
+                logoutBtn.addEventListener(
+                    "click",
+                    function() {
+
+                        localStorage.removeItem(
+                            "currentUser"
+                        );
+
+                        window.location.href =
+                            "login.html";
+
+                    }
+                );
+
+            }
+        );
+
+
+        /* ================= PAGE LOAD ================= */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function() {
+
+                console.log(
+                    "ROOM SCRIPT LOADED"
+                );
+
+                loadRoomsFromBackend();
+
+            }
+        );
+
+    </script>
+
+</body>
+</html>

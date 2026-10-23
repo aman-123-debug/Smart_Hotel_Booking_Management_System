@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login - Smart Hotel</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+        }
+
+        .login-container {
+            width: 380px;
+            background: white;
+            padding: 35px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .login-container h1 {
+            text-align: center;
+            color: #1e3c72;
+            margin-bottom: 10px;
+        }
+
+        .login-container p {
+            text-align: center;
+            color: #777;
+            margin-bottom: 25px;
+        }
+
+        .input-box {
+            margin-bottom: 18px;
+        }
+
+        .input-box label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .input-box input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .input-box input:focus {
+            border-color: #1e3c72;
+        }
+
+        .options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .options a {
+            text-decoration: none;
+            color: #1e3c72;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 6px;
+            background: #1e3c72;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .login-btn:hover {
+            background: #16305c;
+        }
+
+        .register {
+            text-align: center;
+            margin-top: 20px;
+            color: #555;
+        }
+
+        .register a {
+            color: #1e3c72;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back-home {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .back-home a {
+            text-decoration: none;
+            color: #555;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-container">
+
+        <h1>Smart Hotel</h1>
+        <p>Login to your account</p>
+
+        <form action="#" method="post">
+
+            <div class="input-box">
+                <label for="email">Email / Username</label>
+                <input
+                    type="text"
+                    id="email"
+                    name="email"
+                    placeholder="Enter your email or username"
+                    required>
+            </div>
+
+            <div class="input-box">
+                <label for="password">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    required>
+            </div>
+
+            <div class="options">
+
+                <label>
+                    <input type="checkbox" name="remember">
+                    Remember Me
+                </label>
+
+                <a href="#">Forgot Password?</a>
+
+            </div>
+
+            <button type="submit" class="login-btn">
+                Login
+            </button>
+
+        </form>
+
+        <div class="register">
+            Don't have an account?
+            <a href="register.html">Register</a>
+        </div>
+
+        <div class="back-home">
+            <a href="index.html">← Back to Home</a>
+        </div>
+
+    </div>
+
+    <script>
+
+document.querySelector(".login-container form")
+    .addEventListener("submit", async function(event) {
+
+        event.preventDefault();
+
+        const login =
+            document.getElementById("email").value.trim();
+
+        const password =
+            document.getElementById("password").value;
+
+
+        if (!login || !password) {
+
+            alert("Please enter email/username and password.");
+
+            return;
+        }
+
+
+        try {
+
+            const response = await fetch(
+                "http://localhost:5000/api/login",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        login: login,
+                        password: password
+                    })
+                }
+            );
+
+
+            const result =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                alert(
+                    result.error ||
+                    "Login failed."
+                );
+
+                return;
+            }
+
+
+            // Save logged-in user
+            localStorage.setItem(
+                "currentUser",
+                JSON.stringify(result.user)
+            );
+
+
+            alert(
+                "Login successful!"
+            );
+
+
+            // Go to My Booking
+            window.location.href =
+                "my_booking.html";
+
+        } catch (error) {
+
+            console.error(
+                "Login error:",
+                error
+            );
+
+            alert(
+                "Backend server se connection nahi ho raha."
+            );
+
+        }
+
+    });
+
+</script>
+
+</body>
+</html>
